@@ -1,3 +1,8 @@
+<?php
+// Add session check here
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -317,6 +322,28 @@
         .dark .hover\:bg-gray-50:hover {
             @apply hover:bg-gray-700;
         }
+        .kanban-column {
+            min-height: 200px; /* Ensure columns have height even when empty */
+            transition: background-color 0.2s ease;
+        }
+        
+        .kanban-column.draggable-container--is-dragging {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .task-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .task-card.draggable--is-dragging {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
     </style>
 
     <script>
@@ -335,23 +362,29 @@
             localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
         });
 
-        // Initialize Draggable
         document.addEventListener('DOMContentLoaded', () => {
             const containers = document.querySelectorAll('.kanban-column');
             
-            if (window.Draggable) {
-                new window.Draggable.Sortable(containers, {
+            if (typeof Draggable !== 'undefined') {
+                const sortable = new Draggable.Sortable(containers, {
                     draggable: '.task-card',
                     handle: '.task-card',
                     mirror: {
                         constrainDimensions: true,
                     }
-                }).on('sortable:stop', (event) => {
-                    const task = event.data.dragEvent.data.source;
-                    const newStatus = event.data.newContainer.dataset.status;
-                    
-                    // Here you would typically make an API call to update the task status
-                    console.log(`Task moved to ${newStatus}`);
+                });
+
+                sortable.on('drag:start', (evt) => {
+                    evt.source.style.opacity = '0.5';
+                });
+
+                sortable.on('drag:stop', (evt) => {
+                    evt.source.style.opacity = '1';
+                });
+
+                sortable.on('sortable:stop', (evt) => {
+                    const task = evt.data.dragEvent.data.source;
+                    const newStatus = evt.data.newContainer.dataset.status;
                     
                     // Update task styling based on new status
                     updateTaskStyle(task, newStatus);
@@ -359,22 +392,11 @@
             }
         });
 
-        // Show task detail modal
-        function showTaskModal(taskId) {
-            document.getElementById('taskDetailModal').classList.remove('hidden');
-            // Here you would typically fetch task details from the server
-        }
-
-        // Hide task detail modal
-        function hideTaskModal() {
-            document.getElementById('taskDetailModal').classList.add('hidden');
-        }
-
         // Update task card styling based on status
         function updateTaskStyle(taskElement, status) {
             const statusBadge = taskElement.querySelector('.status-badge');
             if (statusBadge) {
-                statusBadge.className = 'px-2 py-1 rounded text-sm';
+                statusBadge.className = 'status-badge px-2 py-1 rounded text-sm';
                 switch (status) {
                     case 'todo':
                         statusBadge.classList.add('bg-gray-100', 'text-gray-600');
@@ -392,14 +414,16 @@
             }
         }
 
-        // Click handler for task cards
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                if (!e.target.closest('.status-badge')) {
-                    showTaskModal(card.dataset.taskId);
-                }
-            });
-        });
+        // Show task detail modal
+        function showTaskModal(taskId) {
+            document.getElementById('taskDetailModal').classList.remove('hidden');
+            // Here you would typically fetch task details from the server
+        }
+
+        // Hide task detail modal
+        function hideTaskModal() {
+            document.getElementById('taskDetailModal').classList.add('hidden');
+        }
 
         // Profile Modal Functions
         function showProfileModal() {

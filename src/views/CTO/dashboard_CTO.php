@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProjectHub - CTO Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -20,8 +23,44 @@
             }
         }
     </script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+    <style>
+        .nav-link {
+            @apply text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+        }
+        .nav-link.active {
+            @apply text-blue-600 dark:text-blue-400;
+        }
+        /* Dark mode styles */
+        .dark .bg-white {
+            @apply bg-dark-card text-gray-100;
+        }
+        .dark .text-gray-600 {
+            @apply text-gray-300;
+        }
+        .dark .text-gray-500 {
+            @apply text-gray-400;
+        }
+        .dark .border {
+            @apply border-gray-600;
+        }
+        .dark .hover\:bg-gray-50:hover {
+            @apply hover:bg-gray-700;
+        }
+        .kanban-column {
+            min-height: 200px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .task-card {
+            cursor: move;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body class="bg-gray-50 dark:bg-dark-bg transition-colors duration-200">
     <!-- Navigation Bar -->
@@ -183,28 +222,45 @@
             </div>
         </div>
 
-        <!-- Tasks Section -->
-        <div id="tasks-section" class="tab-content hidden">
+        <!-- Tasks Section with Kanban -->
+        <div id="tasks-section" class="tab-content">
             <h1 class="text-4xl font-bold text-center mb-8">Task Management</h1>
-            <div class="flex justify-end mb-6">
-                <button onclick="showModal('createTask')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                    Create New Task
-                </button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Sample Task Card -->
-                <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Frontend Development</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">Implement new user interface components</p>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-sm text-blue-600 dark:text-blue-400">E-Commerce Platform</span>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Due: Dec 31, 2024</span>
+            
+            <!-- Kanban Board -->
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Todo Column -->
+                <div class="flex-1">
+                    <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+                        <h2 class="text-lg font-semibold mb-4">Todo</h2>
+                        <div class="kanban-column" data-status="todo">
+                            <!-- Task Cards will be here -->
+                            <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-semibold">Task Title</h3>
+                                    <span class="status-badge px-2 py-1 bg-gray-100 text-gray-600 rounded text-sm">Todo</span>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-3">Task description goes here</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-2 py-1 rounded">In Progress</span>
-                        <div class="flex space-x-2">
-                            <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit</button>
-                            <button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">Delete</button>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="flex-1">
+                    <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+                        <h2 class="text-lg font-semibold mb-4">In Progress</h2>
+                        <div class="kanban-column" data-status="in-progress">
+                            <!-- Task Cards will be here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Column -->
+                <div class="flex-1">
+                    <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+                        <h2 class="text-lg font-semibold mb-4">Completed</h2>
+                        <div class="kanban-column" data-status="completed">
+                            <!-- Task Cards will be here -->
                         </div>
                     </div>
                 </div>
@@ -374,36 +430,75 @@
         </div>
     </div>
 
-    <style>
-        .nav-link {
-            @apply text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors;
-        }
-        .nav-link.active {
-            @apply text-blue-600 dark:text-blue-400;
-        }
-        /* Dark mode styles */
-        .dark .bg-white {
-            @apply bg-dark-card text-gray-100;
-        }
-        .dark .text-gray-600 {
-            @apply text-gray-300;
-        }
-        .dark .text-gray-500 {
-            @apply text-gray-400;
-        }
-        .dark .border {
-            @apply border-gray-600;
-        }
-        .dark .hover\:bg-gray-50:hover {
-            @apply hover:bg-gray-700;
-        }
-    </style>
+    <script>
+        // Initialize drag and drop
+        document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.kanban-column');
+            
+            if (typeof Draggable !== 'undefined') {
+                const sortable = new Draggable.Sortable(containers, {
+                    draggable: '.task-card',
+                    handle: '.task-card',
+                    mirror: {
+                        constrainDimensions: true,
+                    }
+                });
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../../public/assets/js/theme.js"></script>
-    <script src="../../../public/assets/js/cto.js"></script>
+                sortable.on('drag:start', (evt) => {
+                    evt.source.style.opacity = '0.5';
+                });
+
+                sortable.on('drag:stop', (evt) => {
+                    evt.source.style.opacity = '1';
+                });
+
+                sortable.on('sortable:stop', (evt) => {
+                    const task = evt.data.dragEvent.data.source;
+                    const newStatus = evt.data.newContainer.dataset.status;
+                    
+                    // Update task styling based on new status
+                    updateTaskStyle(task, newStatus);
+                });
+            }
+        });
+
+        // Update task card styling based on status
+        function updateTaskStyle(taskElement, status) {
+            const statusBadge = taskElement.querySelector('.status-badge');
+            if (statusBadge) {
+                statusBadge.className = 'status-badge px-2 py-1 rounded text-sm';
+                switch (status) {
+                    case 'todo':
+                        statusBadge.classList.add('bg-gray-100', 'text-gray-600');
+                        statusBadge.textContent = 'Todo';
+                        break;
+                    case 'in-progress':
+                        statusBadge.classList.add('bg-yellow-100', 'text-yellow-600');
+                        statusBadge.textContent = 'In Progress';
+                        break;
+                    case 'completed':
+                        statusBadge.classList.add('bg-green-100', 'text-green-600');
+                        statusBadge.textContent = 'Completed';
+                        break;
+                }
+            }
+        }
+
+        // Tab switching functionality
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.getElementById(tabName + '-section').classList.remove('hidden');
+            
+            // Update active tab styling
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // ... rest of your existing JavaScript ...
+    </script>
 </body>
 </html>

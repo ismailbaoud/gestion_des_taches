@@ -1,6 +1,7 @@
 <?php 
-
-class cennectiondb{
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+class ConnectionDB {
     private $username = "root";
     private $password = "baoud";
     private $host = "localhost";
@@ -8,18 +9,18 @@ class cennectiondb{
     private $conn;
 
     public function getConnection() {
-        $this->conn = null;
         try {
             $this->conn = new PDO(
                 "mysql:host=" . $this->host . ";dbname=" . $this->db,
                 $this->username,
                 $this->password
             );
-
+            return $this->conn;
+            
         } catch(PDOException $e) {
-            echo "Connection Error: " . $e->getMessage();
+            die("Connection Error: " . $e->getMessage());
         }
-        return $this->conn;
     }
 }
+
 ?>

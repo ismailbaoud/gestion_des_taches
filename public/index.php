@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Management Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/theme.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -81,16 +84,16 @@
                 <!-- Login Form -->
                 <div id="login-form" class="auth-form">
                     <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Login</h2>
-                    <form class="space-y-4">
+                    <form action="../src/controullers/login.php" method="post" class="space-y-4">
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                            <input type="email" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
+                            <input type="email" name="email" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
                         </div>
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Password</label>
-                            <input type="password" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
+                            <input type="password" name="password" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">Login</button>
+                        <button type="submit" name="btn_login" value="login" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">Login</button>
                     </form>
                     <p class="mt-4 text-center text-gray-700 dark:text-gray-300">
                         Don't have an account? 
@@ -101,20 +104,20 @@
                 <!-- Sign Up Form -->
                 <div id="signup-form" class="auth-form hidden">
                     <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Sign Up</h2>
-                    <form class="space-y-4">
+                    <form action="../src/controullers/login.php" method="post" class="space-y-4">
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
-                            <input type="text" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
+                            <input type="text" name="username" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
                         </div>
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                            <input type="email" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
+                            <input type="email" name="email" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
                         </div>
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Password</label>
-                            <input type="password" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
+                            <input type="password" name="password" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">Sign Up</button>
+                        <button type="submit" name="btn_signup" value="signUp" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">Sign Up</button>
                     </form>
                     <p class="mt-4 text-center text-gray-700 dark:text-gray-300">
                         Already have an account? 
@@ -132,8 +135,5 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="public/assets/js/theme.js"></script>
-    <script src="public/assets/js/auth.js"></script>
-    <script src="public/assets/js/navigation.js"></script>
 </body>
 </html>
