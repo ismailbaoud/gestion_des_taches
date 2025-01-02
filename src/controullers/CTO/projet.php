@@ -13,13 +13,13 @@ class _projet{
         $this->db = $datab->getConnection();
     }
 
-    public function add_project($name, $des,$visibility){
-        $project = new projet($name, $des,$visibility);
+    public function add_project($name, $des,$visibility,$id){
+        $project = new projet($name, $des,$visibility,$id);
         $project->add_to_db($this->db);
     }
 
-    public function display_project(){
-        $projets = projet::get_projects($this->db);
+    public function display_project($id){
+        $projets = projet::get_projects($this->db,$id);
         return $projets;
     }
     public function display_public_project(){
@@ -31,9 +31,9 @@ if(isset($_POST["btn_project"])){
     $name = $_POST["name"];
     $description = $_POST["description"];
     $visibility = $_POST["visibility"];
-
+    $id = $_SESSION["cto_id"];
+    var_dump($_SESSION["cto_id"]);
     $res = new _projet();
-    $res->add_project($name, $description,$visibility);
-    header("location: ../../views/CTO/dashboard_CTO.php");
+    $res->add_project($name, $description,$visibility,$id);
 }
 ?>

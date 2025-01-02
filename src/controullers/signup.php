@@ -56,5 +56,6 @@ if(isset($_POST["btn_signup"])){
     
     $user = new signup();
     $user->signupset($username, $email, $password);
+    header('location: ../../public/index.php');
 }
 ?>

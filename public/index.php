@@ -1,4 +1,6 @@
 <?php
+session_start();
+session_destroy();
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 require_once __DIR__ . "/../src/controullers/CTO/projet.php";
@@ -122,7 +124,7 @@ require_once __DIR__ . "/../src/controullers/CTO/projet.php";
                 </div>
 
                 <!-- Close Button -->
-                <button onclick="closeAuth()" class="absolute -top-2 -right-2 bg-gray-200 dark:bg-gray-700 rounded-full p-2 hover:bg-gray-300 dark:hover:bg-gray-600">
+                <button onclick="closeAuth()"  class="absolute -top-2 -right-2 bg-gray-200 dark:bg-gray-700 rounded-full p-2 hover:bg-gray-300 dark:hover:bg-gray-600">
                     <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>

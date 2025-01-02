@@ -2,8 +2,12 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 require_once __DIR__ . "/../../controullers/CTO/category_add.php";
-require_once __DIR__ . "/../../controullers/CTO/projet.php";
+require_once __DIR__ . "/../../controullers/CTO/tache.php";
 require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
+require_once __DIR__ . "/../../controullers/CTO/projet.php";
+if($_SESSION["role"] !== "CTO"){
+    header('location:../../../error/404.php');
+}
 
 
 ?>
@@ -111,7 +115,9 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
         <!-- Projects Section -->
     
         <div id="projects-section" class="tab-content">
-            <h1 class="text-4xl font-bold text-center mb-8">project management</h1>
+        <h1 class="text-4xl font-bold text-center mb-8">Welcome,<?=$_SESSION["fullname"]?></h1>
+
+
             <div class="flex justify-end mb-6">
                 <button onclick="showModal('createProject')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                     Create New Project
@@ -121,8 +127,9 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
                 <!-- Sample Project Cards -->
                 <?php 
                       $project = new _projet();
-                      $projets = $project->display_project();
-                      foreach ($projets as $projet) :
+                      $projets = $project->display_project($_SESSION["cto_id"]);
+                      if($projets == null){ $projets = [];}
+                      foreach ($projets as $projet) : 
                   ?>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                     <h3 class="text-xl font-semibold mb-2"><?=$projet["title"]?></h3>
@@ -153,7 +160,7 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
                 <!-- Sample Team Member Card -->
             <?php
                             $res = new equipe_handling();
-                            $members = $res->_display();
+                            $members = $res->_display($_SESSION["cto_id"]);
                             foreach ($members as $member): ?>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                     <div class="flex items-center mb-4">
@@ -197,9 +204,26 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
                                     <th class="text-left py-3 px-4">Status</th>
                                     <th class="text-left py-3 px-4">Actions</th>
                                 </tr>
+                                <?php 
+                            $res = new _tache();
+                            $taches = $res->display_taches();
+                            foreach ($taches as $tache) :
+                            ?>
+                                <tr class="border-b dark:border-gray-700">
+                                    <td class="text-left py-3 px-4"><?=$tache["title"]?></td>
+                                    <td class="text-left py-3 px-4"><?=$tache["projet_id"]?></td>
+                                    <td class="text-left py-3 px-4"><?=$tache["member_id"]?></td>
+                                    <td class="text-left py-3 px-4"><?=$tache["date"]?></td>
+                                    <td class="text-left py-3 px-4"><?=$tache["status"]?></td>
+                                    <td class="text-left py-3 px-4">
+                        <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit | </button>
+                        <button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"> | Remove</button>
+                    </td>
+
+
+                                </tr>
+                                <?php endforeach; ?>
                             </thead>
-                            <tbody>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -292,7 +316,7 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
                         <?php 
                         try {
                             $res = new equipe_handling();
-                            $members = $res->display();
+                            $members = $res->display($_SESSION["cto_id"]);
                             foreach ($members as $member) {
                                 
                                 echo '<option value="' . htmlspecialchars($member['member_id']) . '">' . 
@@ -324,7 +348,7 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
     <div id="assignTaskModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Assign New Task</h3>
-            <form id="assignTaskForm" class="space-y-4" method="post" action="/api/tasks/assign">
+            <form action="../../controullers/CTO/tache.php" method="post" id="assignTaskForm" class="space-y-4" method="post" action="/api/tasks/assign">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskTitle">Task Title</label>
                     <input type="text" id="taskTitle" name="title" required
@@ -337,40 +361,53 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskProject">Project</label>
-                    <select id="taskProject" name="project_id" required
+                    <select id="taskProject" name="projet_id" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-                        <option value="">Select a project</option>
-                        <?php foreach ($projects as $project): ?>
-                            <option value="<?= htmlspecialchars($project['id']) ?>">
-                                <?= htmlspecialchars($project['name']) ?>
+                        <option name="">Select a project</option>
+                        <?php 
+                      $project = new _projet();
+                      $projets = $project->display_project($_SESSION["cto_id"]);
+                      foreach ($projets as $projet) :?>
+                            <option value="<?= htmlspecialchars($projet['id']) ?>">
+                                <?= htmlspecialchars($projet['title']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskAssignee">Assign To</label>
-                    <select id="taskAssignee" name="assignee_id" required
+                    <select id="taskAssignee" name="member_id" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-                        <option value="">Select team member</option>
-                        <?php foreach ($team_members as $member): ?>
-                            <option value="<?= htmlspecialchars($member['id']) ?>">
-                                <?= htmlspecialchars($member['name']) ?>
-                            </option>
-                        <?php endforeach; ?>
+                        <option value="">Select member</option>
+                        <?php 
+                        try {
+                            $res = new equipe_handling();
+                            $members = $res->_display();
+                            foreach ($members as $member) {
+                                
+                                echo '<option value="' . htmlspecialchars($member['member_id']) . '">' . 
+                                     htmlspecialchars($member['fullname']) . 
+                                     '</option>';
+                            }
+                        } catch (Exception $e) {
+                            error_log("Error loading categories: " . $e->getMessage());
+                        }
+                        ?>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskPriority">Priority</label>
                     <select id="taskPriority" name="priority" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                        <option value="">priority</option>
+                        <option value="BASIQUE">BASIQUE</option>
+                        <option value="BUG">BUG</option>
+                        <option value="FONCTIONNALITE">FONCTIONNALITE</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="projectCategory">Category</label>
-                    <select id="projectCategory" name="category" required
+                    <select id="projectCategory" name="category_id" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Select a category</option>
                         <?php 
@@ -389,7 +426,7 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskDueDate">Due Date</label>
-                    <input type="date" id="taskDueDate" name="due_date" required
+                    <input type="date" id="taskDueDate" name="date" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                 </div>
                 <!-- CSRF Token -->
@@ -399,7 +436,7 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
                         class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
                         Cancel
                     </button>
-                    <button type="submit"
+                    <button type="submit" name="btn_tache" value="tache"
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                         Assign Task
                     </button>

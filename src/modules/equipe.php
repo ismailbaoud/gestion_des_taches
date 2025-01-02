@@ -21,9 +21,9 @@ class equipe {
                 return false;
             }
     }
-    static function get_equipe($db){
+    static function get_equipe($db,$id){
         try {
-            $query = "SELECT member_id,fullname, email FROM member where CTO_id = 1";
+            $query = "SELECT member_id,fullname, email FROM member where CTO_id = $id";
             $stmt = $db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

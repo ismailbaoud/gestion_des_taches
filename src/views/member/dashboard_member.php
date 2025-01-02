@@ -1,7 +1,9 @@
 <?php
 // Add session check here
 session_start();
-
+if($_SESSION["role"] !== "member"){
+    header('location:../../../error/404.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +56,7 @@ session_start();
                     <div class="flex space-x-4">
                         <a href="#" class="nav-link active">My Tasks</a>
                         <a href="#" class="nav-link" onclick="showProfileModal()">Profile</a>
-                        <a href="#" class="nav-link">Logout</a>
+                        <a href="../../controullers/logOut.php" class="nav-link">Logout</a>
                     </div>
                 </div>
             </div>
@@ -65,7 +67,7 @@ session_start();
     <div class="max-w-6xl mx-auto px-4 py-8">
         <!-- Welcome Section -->
         <div class="mb-8">
-            <h1 class="text-4xl font-bold text-center mb-4">Welcome Back, <span class="text-blue-600">John Doe</span></h1>
+            <h1 class="text-4xl font-bold text-center mb-4">Welcome Back, <span class="text-blue-600"><?=$_SESSION["fullname"]?></span></h1>
             <p class="text-center text-gray-600 dark:text-gray-300">Here are your assigned tasks</p>
         </div>
 
@@ -230,26 +232,17 @@ session_start();
                 <!-- Profile Information -->
                 <form class="space-y-4">
                     <div>
-                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
-                        <input type="text" value="John Doe" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Full name</label>
+                        <input type="text" value="<?=$_SESSION["fullname"]?>" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
                     </div>
                     <div>
                         <label class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                        <input type="email" value="john.doe@example.com" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
+                        <input type="email" value="<?=$_SESSION["email"]?>" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
                     </div>
                     <div>
                         <label class="block text-gray-700 dark:text-gray-300 mb-2">Role</label>
-                        <input type="text" value="Developer" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
+                        <input type="text" value="<?=$_SESSION["role"]?>" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
                     </div>
-                    <div>
-                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Department</label>
-                        <input type="text" value="Engineering" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Join Date</label>
-                        <input type="text" value="January 1, 2024" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
-                    </div>
-
                     <!-- Statistics -->
                     <div class="grid grid-cols-2 gap-4 mt-6">
                         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-center">

@@ -20,7 +20,7 @@ class login{
     
     public function loginset($email, $password){
         try {
-            $query = "SELECT fullname as username, email FROM admin WHERE email = :email AND password = :password";
+            $query = "SELECT id, fullname as username, email FROM admin WHERE email = :email AND password = :password";
             $stmt = $this->db->prepare($query);
             $stmt->bindparam(":email", $email);
             $stmt->bindparam(":password", $password);
@@ -28,10 +28,17 @@ class login{
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
          
+            
             if($result) {
+                    $_SESSION["role"] = "admin";
+                    $_SESSION["admin_id"] = $result["id"];
+                    $_SESSION["fullname"] = $result["username"];
+                    $_SESSION["email"] = $result["email"];
+
+                
                 return "admin";
             }
-            $query = "SELECT fullname as username, email FROM CTO WHERE email = :email AND password = :password";
+            $query = "SELECT cto_id,fullname as username, email FROM CTO WHERE email = :email AND password = :password";
             $stmt = $this->db->prepare($query);
             $stmt->bindparam(":email", $email);
             $stmt->bindparam(":password", $password);
@@ -40,9 +47,15 @@ class login{
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
          
             if($result) {
+                    $_SESSION["role"] = "CTO";
+                    $_SESSION["cto_id"] = $result["cto_id"];
+                    $_SESSION["fullname"] = $result["username"];
+                    $_SESSION["email"] = $result["email"];
+
+                
                 return "CTO";
             }
-            $query = "SELECT fullname as username, email FROM member WHERE email = :email AND password = :password";
+            $query = "SELECT member_id,fullname as username, email FROM member WHERE email = :email AND password = :password";
             $stmt = $this->db->prepare($query);
             $stmt->bindparam(":email", $email);
             $stmt->bindparam(":password", $password);
@@ -51,6 +64,12 @@ class login{
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
          
             if($result) {
+                    $_SESSION["role"] = "member";
+                    $_SESSION["member_id"] = $result["member_id"];
+                    $_SESSION["fullname"] = $result["username"];
+                    $_SESSION["email"] = $result["email"];
+
+                
                 return "member";
             }
 
@@ -69,7 +88,6 @@ if(isset($_POST["btn_login"])){
     $user = new login();
     $is_a = $user->loginset($email, $password);
     if($is_a == "admin"){
-        
         header("location: ../views/admin/dashboard_admin.php");
 
     }

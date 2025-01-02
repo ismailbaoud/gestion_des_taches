@@ -3,13 +3,14 @@
 class projet{
     private $name ;
     private $description;
-    private $CTO_id = 1;
+    private $CTO_id;
     private $visibility ;
 
-    public function __construct($name,$description,$visibility) {
+    public function __construct($name,$description,$visibility,$id) {
         $this->name = $name;
         $this->description = $description;
         $this->visibility= $visibility;
+        $this->CTO_id = $id;
     }
 
     public function add_to_db($conn){
@@ -23,9 +24,9 @@ class projet{
         }
     }
 
-    static function get_projects($conn){
+    static function get_projects($conn,$id){
             try {
-                $query = "SELECT title, description,status,visibility FROM projet ORDER BY title ASC";
+                $query = "SELECT title, description,status,visibility FROM projet where cto_id = $id ORDER BY title ASC ";
                 $stmt = $conn->prepare($query);
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -38,7 +39,7 @@ class projet{
 
     static function get_public_projects($conn){
         try {
-            $query = "SELECT title, description,status FROM projet where visibility = 'public' ORDER BY title ASC ";
+            $query = "SELECT id,title, description,status FROM projet where visibility = 'public' ORDER BY title ASC ";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -297,7 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeKanbanBoard();
     
     // Initial load of assignments
-    refreshAssignments();
 
     // Close modals when clicking outside
     window.addEventListener('click', (e) => {

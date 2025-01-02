@@ -22,7 +22,7 @@ ini_set('display_errors', 1);
 
         static function get_admins($db){
             try {
-                $query = "SELECT fullname, email FROM admin";
+                $query = "SELECT id,fullname, email FROM admin";
                 $stmt = $db->prepare($query);
                 $stmt->execute();
                 $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -1,4 +1,9 @@
+<?php session_start();
+if($_SESSION["role"] !== "admin"){
+    header('location:../../../error/404.php');
+}?>
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -50,7 +55,7 @@
                         <a href="#" class="nav-link" onclick="showTab('users')">Users</a>
                         <a href="#" class="nav-link" onclick="showTab('projects')">Projects</a>
                         <a href="#" class="nav-link" onclick="showTab('settings')">Settings</a>
-                        <a href="#" class="nav-link">Logout</a>
+                        <a href="../../controullers/logOut.php" class="nav-link">Logout</a>
                     </div>
                 </div>
             </div>
@@ -61,7 +66,7 @@
     <div class="max-w-6xl mx-auto px-4 py-8">
         <!-- Dashboard Overview -->
         <div id="dashboard-section" class="tab-content">
-            <h1 class="text-4xl font-bold text-center mb-8">Welcome, Admin</h1>
+            <h1 class="text-4xl font-bold text-center mb-8">Welcome,<?=$_SESSION["fullname"]?></h1>
             
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">

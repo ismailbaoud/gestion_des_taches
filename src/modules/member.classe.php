@@ -10,12 +10,7 @@ class member extends User {
 
     }
 
-    static function check_email($db,$email){
-        $check_query = "SELECT email FROM member WHERE email = ?";
-        $check_stmt = $db->prepare($check_query);
-        $check_stmt->execute([$email]);
-        return $check_stmt;
-    }
+   
     public function add_to_db($db){
         try {
             $query = "INSERT INTO member (fullname, email, password) VALUES (?, ?, ?)";
@@ -59,6 +54,12 @@ class member extends User {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
         
+    }
+    static function check_email($db,$email){
+        $check_query = "SELECT email FROM member WHERE email = ?";
+        $check_stmt = $db->prepare($check_query);
+        $check_stmt->execute([$email]);
+        return $check_stmt;
     }
 }
 ?>

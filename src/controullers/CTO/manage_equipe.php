@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+session_start();
 require_once __DIR__ . "/../../modules/equipe.php";
 require_once __DIR__ . "/../../../config/connectiondb.class.php";
 
@@ -16,10 +17,10 @@ class equipe_handling {
         $res = new equipe($m_id, $c_id);
         $res->add_member($this->db);
     }
-    public function _display() {
+    public function _display($id) {
         
         try {
-            return equipe::get_equipe($this->db);
+            return equipe::get_equipe($this->db,$id);
         } catch (PDOException $e) {
             error_log("Error in category display: " . $e->getMessage());
             return [];
@@ -46,7 +47,7 @@ if(isset($_POST["btn_category"])) {
 if(isset($_POST["btn_equipe"])){
     $id = $_POST["role"];
     $res = new equipe_handling();
-    $res->add_member($id,1) ;
+    $res->add_member($id,$_SESSION["cto_id"]) ;
     header("location: ../../views/CTO/dashboard_CTO.php");
 }
 ?>
