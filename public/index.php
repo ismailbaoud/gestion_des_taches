@@ -1,3 +1,6 @@
+<?php
+echo "<script>alert('".$_GET["action"]."')</script>";
+?>
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
@@ -104,7 +107,7 @@
                 <!-- Sign Up Form -->
                 <div id="signup-form" class="auth-form hidden">
                     <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Sign Up</h2>
-                    <form action="../src/controullers/login.php" method="post" class="space-y-4">
+                    <form action="../src/controullers/signup.php" method="post" class="space-y-4">
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
                             <input type="text" name="username" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>

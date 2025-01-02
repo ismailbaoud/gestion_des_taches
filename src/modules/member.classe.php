@@ -1,5 +1,6 @@
 <?php 
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once 'user.php';
 
 class member extends User {
@@ -48,6 +49,16 @@ class member extends User {
             return false;
         }
     }
-    
+
+    static function is_member($db){
+        $query = "SELECT fullname as username, email FROM member WHERE email = :email AND password = :password";
+        $stmt = $db->prepare($query);
+        $stmt->bindparam(":email", $email);
+        $stmt->bindparam(":password", $password);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        
+    }
 }
 ?>

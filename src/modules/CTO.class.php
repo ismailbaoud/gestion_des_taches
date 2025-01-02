@@ -1,4 +1,6 @@
 <?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
     require_once 'user.php';
 
     class CTO extends User {
@@ -40,5 +42,22 @@
                 return false;
             }
         }
+        static function check_email($db,$email){
+            $check_query = "SELECT email FROM CTO WHERE email = ?";
+            $check_stmt = $db->prepare($check_query);
+            $check_stmt->execute([$email]);
+            return $check_stmt;
+        }
+        static function is_CTO($db){
+            $query = "SELECT fullname as username, email FROM CTO WHERE email = :email AND password = :password";
+            $stmt = $db->prepare($query);
+            $stmt->bindparam(":email", $email);
+            $stmt->bindparam(":password", $password);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        
     }
 ?>
