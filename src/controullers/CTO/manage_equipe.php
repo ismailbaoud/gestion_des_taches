@@ -12,11 +12,23 @@ class equipe_handling {
         $this->db = $datab->getConnection();
     }
 
-    
-    public function display() {
+    public function add_member($m_id,$c_id){
+        $res = new equipe($m_id, $c_id);
+        $res->add_member($this->db);
+    }
+    public function _display() {
         
         try {
             return equipe::get_equipe($this->db);
+        } catch (PDOException $e) {
+            error_log("Error in category display: " . $e->getMessage());
+            return [];
+        }
+    }
+    public function display() {
+        
+        try {
+            return equipe::get_all_equipe($this->db);
         } catch (PDOException $e) {
             error_log("Error in category display: " . $e->getMessage());
             return [];
@@ -28,6 +40,13 @@ if(isset($_POST["btn_category"])) {
     $name = $_POST["name"];
     $category = new category_handling();
     $category->getdata($name);
+    header("location: ../../views/CTO/dashboard_CTO.php");
+}
+
+if(isset($_POST["btn_equipe"])){
+    $id = $_POST["role"];
+    $res = new equipe_handling();
+    $res->add_member($id,1) ;
     header("location: ../../views/CTO/dashboard_CTO.php");
 }
 ?>

@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 require_once __DIR__ . "/../../controullers/CTO/category_add.php";
 require_once __DIR__ . "/../../controullers/CTO/projet.php";
-require_once __DIR__ . "/../../controullers/CTO/display_equipe.php";
+require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
 
 
 ?>
@@ -98,7 +98,7 @@ require_once __DIR__ . "/../../controullers/CTO/display_equipe.php";
                             <a href="#" class="nav-link" onclick="showTab('team')">Team</a>
                             <a href="#" class="nav-link" onclick="showTab('assign-tasks')">Assign Tasks</a>
                             <a href="#" class="nav-link" onclick="showTab('categories')">Categories</a>
-                            <a href="#" class="nav-link">Logout</a>
+                            <a href="../../controullers/logOut.php" class="nav-link">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -129,6 +129,7 @@ require_once __DIR__ . "/../../controullers/CTO/display_equipe.php";
                     <p class="text-gray-600 dark:text-gray-300 mb-4"><?=$projet["description"]?></p>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-500 dark:text-gray-400"><?=$projet["status"]?></span>
+                        <span class="text-sm text-gray-500 dark:text-gray-400"><?=$projet["visibility"]?></span>
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
                         <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit</button>
@@ -152,7 +153,7 @@ require_once __DIR__ . "/../../controullers/CTO/display_equipe.php";
                 <!-- Sample Team Member Card -->
             <?php
                             $res = new equipe_handling();
-                            $members = $res->display();
+                            $members = $res->_display();
                             foreach ($members as $member): ?>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                     <div class="flex items-center mb-4">
@@ -252,6 +253,16 @@ require_once __DIR__ . "/../../controullers/CTO/display_equipe.php";
                     <textarea id="projectDescription" name="description" rows="3" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"></textarea>
                 </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1" for="projectDescription">visibility</label>
+                    <select id="taskAssignee" name="visibility" required
+                        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                        <option value="">Select visibility</option>
+                        <option value="private">private</option>
+                        <option value="public">public</option>
+
+                    </select>
+                </div>
                 
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="hideModal('createProject')"
@@ -271,10 +282,10 @@ require_once __DIR__ . "/../../controullers/CTO/display_equipe.php";
     <div id="addMemberModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Add Team Member</h3>
-            <form id="addMemberForm" class="space-y-4">
+            <form action="../../controullers/CTO/manage_equipe.php" method="post" id="addMemberForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="memberRole">Select Member</label>
-                    <form action="">
+              
                     <select id="memberRole" name="role" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Select a role</option>
@@ -300,12 +311,11 @@ require_once __DIR__ . "/../../controullers/CTO/display_equipe.php";
                         class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
                         Cancel
                     </button>
-                    <button type="submit"
+                    <button type="submit" name="btn_equipe"
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                         Add Member
                     </button>
                 </div>
-                </form>
             </form>
         </div>
     </div>

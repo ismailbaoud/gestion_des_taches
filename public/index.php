@@ -1,5 +1,8 @@
 <?php
-echo "<script>alert('".$_GET["action"]."')</script>";
+error_reporting(E_ALL);
+ini_set('display_errors',1);
+require_once __DIR__ . "/../src/controullers/CTO/projet.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light">
@@ -53,30 +56,20 @@ echo "<script>alert('".$_GET["action"]."')</script>";
         <h1 class="text-4xl font-bold text-center mb-8 text-gray-900 dark:text-white">Discover Public Projects</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Sample Project Cards -->
+            <?php 
+                      $project = new _projet();
+                      $projets = $project->display_public_project();
+                      foreach ($projets as $projet) :
+                  ?>
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">E-Commerce Platform</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">A full-featured online shopping platform with modern UI/UX.</p>
+                <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white"><?=$projet["title"]?></h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4"><?=$projet["description"]?></p>
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-blue-600 dark:text-blue-400">Web Development</span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">Active</span>
+                    <span class="text-sm text-gray-500 dark:text-gray-400"><?=$projet["status"]?></span>
                 </div>
             </div>
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Task Manager App</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">Simple yet powerful task management application.</p>
-                <div class="flex justify-between items-center">
-                    <span class="text-sm text-blue-600 dark:text-blue-400">Mobile App</span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">Completed</span>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">AI Chat Bot</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">Intelligent chatbot powered by machine learning.</p>
-                <div class="flex justify-between items-center">
-                    <span class="text-sm text-blue-600 dark:text-blue-400">AI/ML</span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">In Progress</span>
-                </div>
-            </div>
+            <?php endforeach?>
+
         </div>
     </div>
 

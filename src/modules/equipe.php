@@ -3,19 +3,35 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 class equipe {
-    private $name;
+    private $cto_id;
+    private $member_id;
+
+    public function __construct($member_id, $cto_id){
+        $this->member_id = $member_id;
+        $this->cto_id = $cto_id;
+    }
     
-    public function add_member($conn,$cto_id,$member_id){
+    public function add_member($conn){
             try {
-                $query = "UPDATE member SET cto_id = ? WHERE id = ? ";
+                $query = "UPDATE member SET CTO_id = ? WHERE member_id = ? ";
                 $stmt = $conn->prepare($query);
-                $stmt->execute([$cto_id, $member_id]);
+                $stmt->execute([$this->cto_id, $this->member_id]);
                 return true;
             } catch(PDOException $e) {
                 return false;
             }
     }
     static function get_equipe($db){
+        try {
+            $query = "SELECT member_id,fullname, email FROM member where CTO_id = 1";
+            $stmt = $db->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            return false;
+        }
+    }
+    static function get_all_equipe($db){
         try {
             $query = "SELECT member_id,fullname, email FROM member where CTO_id is null";
             $stmt = $db->prepare($query);
