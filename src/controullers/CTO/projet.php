@@ -28,12 +28,14 @@ class _projet{
     }
 }
 if(isset($_POST["btn_project"])){
+    session_start();
     $name = $_POST["name"];
     $description = $_POST["description"];
     $visibility = $_POST["visibility"];
     $id = $_SESSION["cto_id"];
-    var_dump($_SESSION["cto_id"]);
     $res = new _projet();
     $res->add_project($name, $description,$visibility,$id);
+    header("location: ../../views/CTO/dashboard_CTO.php");
+
 }
 ?>

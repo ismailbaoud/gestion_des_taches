@@ -38,7 +38,7 @@ class login{
                 
                 return "admin";
             }
-            $query = "SELECT cto_id,fullname as username, email FROM CTO WHERE email = :email AND password = :password";
+            $query = "SELECT CTO_id as id,fullname as username, email FROM CTO WHERE email = :email AND password = :password";
             $stmt = $this->db->prepare($query);
             $stmt->bindparam(":email", $email);
             $stmt->bindparam(":password", $password);
@@ -48,7 +48,7 @@ class login{
          
             if($result) {
                     $_SESSION["role"] = "CTO";
-                    $_SESSION["cto_id"] = $result["cto_id"];
+                    $_SESSION["cto_id"] = $result["id"];
                     $_SESSION["fullname"] = $result["username"];
                     $_SESSION["email"] = $result["email"];
 

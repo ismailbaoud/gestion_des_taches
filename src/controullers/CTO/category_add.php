@@ -11,18 +11,18 @@ class category_handling {
         $datab = new ConnectionDB();
         $this->db = $datab->getConnection();
     }
-
-    public function getdata($name) {
-        $category = new category($name);
+    
+    public function getdata($name,$id) {
+        $category = new category($name,$id);
         $category->add_to_db($this->db);
     }
     
-    public static function display() {
+    static function display($id) {
         $datab = new ConnectionDB();
         $db = $datab->getConnection();
         
         try {
-            $query = "SELECT category_id, name FROM category ORDER BY name ASC";
+            $query = "SELECT category_id, name FROM category where cto_id = $id ORDER BY name ASC";
             $stmt = $db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,9 +34,12 @@ class category_handling {
 }
 
 if(isset($_POST["btn_category"])) {
+    session_start();
     $name = $_POST["name"];
+    $id = $_SESSION["cto_id"];
+    
     $category = new category_handling();
-    $category->getdata($name);
+    $category->getdata($name,$id);
     header("location: ../../views/CTO/dashboard_CTO.php");
 }
 ?>

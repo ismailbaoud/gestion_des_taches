@@ -26,7 +26,7 @@ class projet{
 
     static function get_projects($conn,$id){
             try {
-                $query = "SELECT title, description,status,visibility FROM projet where cto_id = $id ORDER BY title ASC ";
+                $query = "SELECT id,title, description,status,visibility FROM projet where cto_id = $id ORDER BY title ASC ";
                 $stmt = $conn->prepare($query);
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);

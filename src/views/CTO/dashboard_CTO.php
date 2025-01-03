@@ -207,6 +207,8 @@ if($_SESSION["role"] !== "CTO"){
                                 <?php 
                             $res = new _tache();
                             $taches = $res->display_taches();
+                      if($projets == null){ $projets = [];}
+
                             foreach ($taches as $tache) :
                             ?>
                                 <tr class="border-b dark:border-gray-700">
@@ -242,7 +244,9 @@ if($_SESSION["role"] !== "CTO"){
                 <!-- Sample Category Card -->
                  <?php 
                       
-                            $categories = category_handling::display();
+                            $categories = category_handling::display($_SESSION["cto_id"]);
+                      if($projets == null){ $projets = [];}
+
                             foreach ($categories as $category) :
                         ?>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
@@ -367,6 +371,7 @@ if($_SESSION["role"] !== "CTO"){
                         <?php 
                       $project = new _projet();
                       $projets = $project->display_project($_SESSION["cto_id"]);
+                      if($projets == null){ $projets = [];}
                       foreach ($projets as $projet) :?>
                             <option value="<?= htmlspecialchars($projet['id']) ?>">
                                 <?= htmlspecialchars($projet['title']) ?>
@@ -382,7 +387,9 @@ if($_SESSION["role"] !== "CTO"){
                         <?php 
                         try {
                             $res = new equipe_handling();
-                            $members = $res->_display();
+                            $members = $res->_display($_SESSION["cto_id"]);
+                      if($members == null){ $members = [];}
+
                             foreach ($members as $member) {
                                 
                                 echo '<option value="' . htmlspecialchars($member['member_id']) . '">' . 
@@ -412,7 +419,7 @@ if($_SESSION["role"] !== "CTO"){
                         <option value="">Select a category</option>
                         <?php 
                         try {
-                            $categories = category_handling::display();
+                            $categories = category_handling::display($_SESSION["cto_id"]);
                             foreach ($categories as $category) {
                                 echo '<option value="' . htmlspecialchars($category['category_id']) . '">' . 
                                      htmlspecialchars($category['name']) . 
@@ -430,7 +437,7 @@ if($_SESSION["role"] !== "CTO"){
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                 </div>
                 <!-- CSRF Token -->
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
+                <input type="hidden" name="csrf_token" value="">
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="hideModal('assignTask')"
                         class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
@@ -448,7 +455,7 @@ if($_SESSION["role"] !== "CTO"){
     <!-- Create Category Modal -->
     <div id="createCategoryModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
-            <h3 class="text-xl font-bold mb-4">Create Category</h3>
+            <h3 class="text-xl font-bold mb-4">Create New Category</h3>
             <form action="../../controullers/CTO/category_add.php" method="post" id="createCategoryForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="categoryName">Category Name</label>
@@ -460,8 +467,7 @@ if($_SESSION["role"] !== "CTO"){
                         class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
                         Cancel
                     </button>
-                    <button type="submit" name="btn_category" value="category"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    <button type="submit" name="btn_category" value="category" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                         Create Category
                     </button>
                 </div>
