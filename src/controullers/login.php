@@ -20,13 +20,16 @@ class login{
     
     public function loginset($email, $password){
         try {
-            $query = "SELECT id, fullname as username, email FROM admin WHERE email = :email AND password = :password";
+            $query = "SELECT id, password,fullname as username, email FROM admin WHERE email = :email";
             $stmt = $this->db->prepare($query);
             $stmt->bindparam(":email", $email);
-            $stmt->bindparam(":password", $password);
             $stmt->execute();
-
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = [];
+            $test = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($test){
+            if(!password_verify($password,$test["password"])){
+                $result = $test;
+            }}
          
             
             if($result) {
@@ -38,14 +41,17 @@ class login{
                 
                 return "admin";
             }
-            $query = "SELECT CTO_id as id,fullname as username, email FROM CTO WHERE email = :email AND password = :password";
+            $query = "SELECT CTO_id as id,password,fullname as username, email FROM CTO WHERE email = :email";
             $stmt = $this->db->prepare($query);
             $stmt->bindparam(":email", $email);
-            $stmt->bindparam(":password", $password);
             $stmt->execute();
 
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-         
+            $test = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = [];
+            if($test){
+            if(!password_verify($password,$test["password"])){
+                $result = $test;
+            }}
             if($result) {
                     $_SESSION["role"] = "CTO";
                     $_SESSION["cto_id"] = $result["id"];
@@ -55,14 +61,18 @@ class login{
                 
                 return "CTO";
             }
-            $query = "SELECT member_id,fullname as username, email FROM member WHERE email = :email AND password = :password";
+            $query = "SELECT member_id,password,fullname as username, email FROM member WHERE email = :email";
             $stmt = $this->db->prepare($query);
             $stmt->bindparam(":email", $email);
-            $stmt->bindparam(":password", $password);
             $stmt->execute();
 
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-         
+            $result = [];
+            $test = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($test){
+            if(!password_verify($password,$test["password"])){
+                $result = $test;
+            }
+        }
             if($result) {
                     $_SESSION["role"] = "member";
                     $_SESSION["member_id"] = $result["member_id"];

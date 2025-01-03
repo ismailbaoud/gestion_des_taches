@@ -7,6 +7,8 @@ require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
 require_once __DIR__ . "/../../controullers/CTO/projet.php";
 require_once __DIR__ . "/../../controullers/admin/member.php";
 require_once __DIR__ . "/../../controullers/admin/projet.php";
+require_once __DIR__ . "/../../controullers/admin/statistics.php";
+
 
 
 if($_SESSION["role"] !== "admin"){
@@ -77,28 +79,28 @@ if($_SESSION["role"] !== "admin"){
         <!-- Dashboard Overview -->
         <div id="dashboard-section" class="tab-content">
             <h1 class="text-4xl font-bold text-center mb-8">Welcome,<?=$_SESSION["fullname"]?></h1>
-            
+           
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Total Users</h3>
-                    <p class="text-3xl font-bold text-blue-600">150</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+12 this month</p>
+                    <p class="text-3xl font-bold text-blue-600"><?=$total_members?></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+<?=$total_members?> this month</p>
                 </div>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Active Projects</h3>
-                    <p class="text-3xl font-bold text-green-600">45</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+8 this month</p>
+                    <p class="text-3xl font-bold text-green-600"><?=$active_projects?></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+<?=$active_projects?> this month</p>
                 </div>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Completed Projects</h3>
-                    <p class="text-3xl font-bold text-purple-600">89</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+15 this month</p>
+                    <p class="text-3xl font-bold text-purple-600"><?=$complete_projects?></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+<?=$complete_projects?> this month</p>
                 </div>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Total Tasks</h3>
-                    <p class="text-3xl font-bold text-orange-600">567</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+48 this month</p>
+                    <p class="text-3xl font-bold text-orange-600"><?=$total_taches?></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">+<?=$total_taches?> this month</p>
                 </div>
             </div>
 
@@ -223,15 +225,12 @@ if($_SESSION["role"] !== "admin"){
                         </div>
                         <div class="ml-4">
                             <h3 class="text-xl font-semibold"><?=$member["fullname"]?></h3>
-                            <p class="text-gray-600 dark:text-gray-300">Developer</p>
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <p class="text-gray-600 dark:text-gray-300">john.doe@example.com</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Joined: Jan 1, 2024</p>
+                        <p class="text-gray-600 dark:text-gray-300"><?=$member["email"]?></p>
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
-                        <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800">Edit</button>
                         <button class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
                     </div>
                 </div>
@@ -262,7 +261,6 @@ if($_SESSION["role"] !== "admin"){
                     </div>
                     <div class="flex justify-between items-center">
                         <div class="flex space-x-2">
-                            <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800">Edit</button>
                             <button class="text-red-600 dark:text-red-500 hover:text-red-800">Archive</button>
                         </div>
                     </div>

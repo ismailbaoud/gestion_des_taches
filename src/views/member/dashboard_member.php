@@ -133,19 +133,20 @@ if($_SESSION["role"] !== "member"){
                         <?php 
                             $res = new tache_member();
                             $taches = $res->display_doing_taches($_SESSION["member_id"]);
-                      if($taches == null){ $tache = [];}
+                            if($taches == null){ $taches = [];
+                            }
 
                             foreach ($taches as $tache) :
                             ?>
                         <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold"><?=$tache["title"]?></h3>
-                                <span class="text-sm text-blue-600 dark:text-blue-400">Mobile App</span>
+                                <h3 class="text-lg font-semibold"><?=$tache["title"] ?></h3>
+                                <span class="text-sm text-blue-600 dark:text-blue-400"><?=$tache["tag"]?></span>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 mb-3">Connect payment gateway API endpoints</p>
+                            <p class="text-gray-600 dark:text-gray-300 mb-3"><?=$tache["description"]?></p>
                             <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500 dark:text-gray-400">Due: Dec 28, 2024</span>
-                                <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded text-sm">Medium Priority</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400"><?=$tache["date"]?></span>
+                                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?=$tache["name"]?></span>
                             </div>
                         </div>
                         <?php endforeach; ?>
@@ -170,13 +171,13 @@ if($_SESSION["role"] !== "member"){
                             ?>
                         <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold"><?=$tache["title"]?></h3>
-                                <span class="text-sm text-blue-600 dark:text-blue-400">CRM System</span>
+                                <h3 class="text-lg font-semibold"><?=$tache["title"] ?></h3>
+                                <span class="text-sm text-blue-600 dark:text-blue-400"><?=$tache["tag"]?></span>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 mb-3">Design and implement database schema</p>
+                            <p class="text-gray-600 dark:text-gray-300 mb-3"><?=$tache["description"]?></p>
                             <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500 dark:text-gray-400">Completed: Dec 20, 2024</span>
-                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 rounded text-sm">Completed</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400"><?=$tache["date"]?></span>
+                                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?=$tache["name"]?></span>
                             </div>
                         </div>
                         <?php endforeach; ?>

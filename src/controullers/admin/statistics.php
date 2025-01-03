@@ -24,13 +24,13 @@ class statistics{
     }
 
     public function project_complet() {
-        $projets = projet::get_members($this->db);
+        $projets = projet::project_complet($this->db);
         
         return $projets;
     }
 
     public function project_active() {
-        $projets = projet::get_members($this->db);
+        $projets = projet::project_active($this->db);
         
         return $projets;
     }
@@ -62,11 +62,9 @@ foreach($projects as $project){
     $active_projects++;
 }
 $stat = new statistics();
-$projects = $stat->taches();
-foreach($projects as $project){
-    $active_projects++;
+$taches = $stat->taches();
+foreach($taches as $tache){
+    $total_taches++;
 }
-var_dump($total_members,$complete_projects,$active_projects);
-die();
 
 ?>

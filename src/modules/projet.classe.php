@@ -57,9 +57,35 @@ class projet{
         } catch(PDOException $e) {
             error_log("Error displaying categories: " . $e->getMessage());
            
+        } 
+    }
+
+    static function project_complet($conn){
+        try {
+            $query = "SELECT * FROM projet where status = 'COMPLETE'";
+          
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+           
         }
     
-}
+    }
+    static function project_active($conn){
+        try {
+            $query = "SELECT * FROM projet where status = 'ACTIVE'";
+          
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+           
+        }
+    
+    }
 
 }
 ?>
