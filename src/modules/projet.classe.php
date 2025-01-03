@@ -24,6 +24,17 @@ class projet{
         }
     }
 
+    static function get_all_projects($conn){
+        try {
+            $query = "SELECT * FROM projet ORDER BY title ASC ";
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+           
+        }
+    }
     static function get_projects($conn,$id){
             try {
                 $query = "SELECT id,title, description,status,visibility FROM projet where cto_id = $id ORDER BY title ASC ";

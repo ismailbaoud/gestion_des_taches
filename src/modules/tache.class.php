@@ -33,7 +33,14 @@ class tache{
     
     static function get_taches($conn){
         try {
-            $query = "SELECT * FROM tache";
+            $query = "SELECT t.title, t.description, t.status, t.date, t.tag, c.name, 
+                     m.fullname, p.title as projet_name
+              FROM tache t 
+              INNER JOIN projet p ON t.projet_id = p.id 
+              INNER JOIN category c ON t.category_id = c.category_id 
+              INNER JOIN member m ON t.member_id = m.member_id 
+              WHERE t.status = 'A_FAIRE'";
+          
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,6 +50,74 @@ class tache{
         }
     
     }
+    
+
+    static function get_todo_taches($conn,$id){
+        try {
+            $query = "SELECT t.title, t.description, t.status, t.date, t.tag, c.name, 
+                     p.title as projet_name
+              FROM tache t 
+              INNER JOIN projet p ON t.projet_id = p.id 
+              INNER JOIN category c ON t.category_id = c.category_id
+              WHERE t.status = 'A_FAIRE' and t.member_id = $id";
+          
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+           
+        }
+    }
+    static function get_doing_taches($conn,$id){
+        try {
+            $query = "SELECT t.title, t.description, t.status, t.date, t.tag, c.name, 
+                     p.title as projet_name
+              FROM tache t 
+              INNER JOIN projet p ON t.projet_id = p.id 
+              INNER JOIN category c ON t.category_id = c.category_id
+              WHERE t.status = 'EN_COURS' and t.member_id = $id";
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+           
+        }
+    }
+    static function get_done_taches($conn,$id){
+        try {
+            $query = "SELECT t.title, t.description, t.status, t.date, t.tag, c.name, 
+                     p.title as projet_name
+              FROM tache t 
+              INNER JOIN projet p ON t.projet_id = p.id 
+              INNER JOIN category c ON t.category_id = c.category_id
+              WHERE t.status = 'TERMINER' and t.member_id = $id";
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+           
+        }
+    }
+
+    static function get_all_taches($conn){
+        try {
+            $query = "SELECT * FROM tache";
+          
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+           
+        }
+    
+    }
+    
+
+
 
 }
 ?>

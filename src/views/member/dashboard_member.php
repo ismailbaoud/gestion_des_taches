@@ -1,6 +1,11 @@
 <?php
-// Add session check here
-session_start();
+require_once __DIR__ . "/../../controullers/CTO/category_add.php";
+require_once __DIR__ . "/../../controullers/CTO/tache.php";
+require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
+require_once __DIR__ . "/../../controullers/CTO/projet.php";
+require_once __DIR__ . "/../../controullers/member/tache.php";
+
+
 if($_SESSION["role"] !== "member"){
     header('location:../../../error/404.php');
 }
@@ -75,15 +80,15 @@ if($_SESSION["role"] !== "member"){
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Todo</h3>
-                <p class="text-3xl font-bold text-blue-600">5</p>
+                <p class="text-3xl font-bold text-blue-600"><?=$todo_count?></p>
             </div>
             <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">In Progress</h3>
-                <p class="text-3xl font-bold text-green-600">3</p>
+                <p class="text-3xl font-bold text-green-600"><?=$doing_count?></p>
             </div>
             <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Completed</h3>
-                <p class="text-3xl font-bold text-purple-600">12</p>
+                <p class="text-3xl font-bold text-purple-600"><?=$done_count?></p>
             </div>
         </div>
 
@@ -95,17 +100,25 @@ if($_SESSION["role"] !== "member"){
                     <h2 class="text-lg font-semibold mb-4">Todo</h2>
                     <div class="kanban-column" data-status="todo">
                         <!-- Task Card -->
+                        <?php 
+                            $res = new tache_member();
+                            $taches = $res->display_todo_taches($_SESSION["member_id"]);
+                      if($taches == null){ $tache = [];}
+
+                            foreach ($taches as $tache) :
+                            ?>
                         <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold">Frontend Development</h3>
-                                <span class="text-sm text-blue-600 dark:text-blue-400">E-Commerce</span>
+                                <h3 class="text-lg font-semibold"><?=$tache["title"] ?></h3>
+                                <span class="text-sm text-blue-600 dark:text-blue-400"><?=$tache["tag"]?></span>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 mb-3">Implement new user interface components</p>
+                            <p class="text-gray-600 dark:text-gray-300 mb-3"><?=$tache["description"]?></p>
                             <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500 dark:text-gray-400">Due: Dec 31, 2024</span>
-                                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm">High Priority</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400"><?=$tache["date"]?></span>
+                                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?=$tache["name"]?></span>
                             </div>
                         </div>
+                        <?php endforeach; ?>
                         <!-- More todo tasks here -->
                     </div>
                 </div>
@@ -117,9 +130,16 @@ if($_SESSION["role"] !== "member"){
                     <h2 class="text-lg font-semibold mb-4">In Progress</h2>
                     <div class="kanban-column" data-status="in-progress">
                         <!-- Task Card -->
+                        <?php 
+                            $res = new tache_member();
+                            $taches = $res->display_doing_taches($_SESSION["member_id"]);
+                      if($taches == null){ $tache = [];}
+
+                            foreach ($taches as $tache) :
+                            ?>
                         <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold">API Integration</h3>
+                                <h3 class="text-lg font-semibold"><?=$tache["title"]?></h3>
                                 <span class="text-sm text-blue-600 dark:text-blue-400">Mobile App</span>
                             </div>
                             <p class="text-gray-600 dark:text-gray-300 mb-3">Connect payment gateway API endpoints</p>
@@ -128,6 +148,8 @@ if($_SESSION["role"] !== "member"){
                                 <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 rounded text-sm">Medium Priority</span>
                             </div>
                         </div>
+                        <?php endforeach; ?>
+
                         <!-- More in-progress tasks here -->
                     </div>
                 </div>
@@ -139,9 +161,16 @@ if($_SESSION["role"] !== "member"){
                     <h2 class="text-lg font-semibold mb-4">Completed</h2>
                     <div class="kanban-column" data-status="completed">
                         <!-- Task Card -->
+                        <?php 
+                            $res = new tache_member();
+                            $taches = $res->display_done_taches($_SESSION["member_id"]);
+                      if($taches == null){ $tache = [];}
+
+                            foreach ($taches as $tache) :
+                            ?>
                         <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold">Database Schema</h3>
+                                <h3 class="text-lg font-semibold"><?=$tache["title"]?></h3>
                                 <span class="text-sm text-blue-600 dark:text-blue-400">CRM System</span>
                             </div>
                             <p class="text-gray-600 dark:text-gray-300 mb-3">Design and implement database schema</p>
@@ -150,6 +179,8 @@ if($_SESSION["role"] !== "member"){
                                 <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 rounded text-sm">Completed</span>
                             </div>
                         </div>
+                        <?php endforeach; ?>
+
                         <!-- More completed tasks here -->
                     </div>
                 </div>
@@ -185,14 +216,15 @@ if($_SESSION["role"] !== "member"){
                     <label class="block text-gray-700 dark:text-gray-300 mb-2">Due Date</label>
                     <p id="taskDueDate" class="text-gray-600 dark:text-gray-300">Dec 31, 2024</p>
                 </div>
-                <div>
+                <form method="post" action="">
                     <label class="block text-gray-700 dark:text-gray-300 mb-2">Status</label>
-                    <select id="taskStatus" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg">
+                    <select id="taskStatus" name="taskStatus" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg">
                         <option value="todo">Todo</option>
                         <option value="in-progress">In Progress</option>
                         <option value="completed">Completed</option>
                     </select>
-                </div>
+                    <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg">Update Status</button>
+                </form>
             </div>
             <div class="mt-6 flex justify-end">
                 <button onclick="hideTaskModal()" class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600">
@@ -384,7 +416,7 @@ if($_SESSION["role"] !== "member"){
                 });
             }
         });
-
+œ
         // Update task card styling based on status
         function updateTaskStyle(taskElement, status) {
             const statusBadge = taskElement.querySelector('.status-badge');

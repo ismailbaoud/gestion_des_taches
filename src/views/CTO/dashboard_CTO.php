@@ -206,15 +206,17 @@ if($_SESSION["role"] !== "CTO"){
                                 </tr>
                                 <?php 
                             $res = new _tache();
+
                             $taches = $res->display_taches();
-                      if($projets == null){ $projets = [];}
+                 
+                      if($taches == null){ $taches = [];}
 
                             foreach ($taches as $tache) :
                             ?>
                                 <tr class="border-b dark:border-gray-700">
                                     <td class="text-left py-3 px-4"><?=$tache["title"]?></td>
-                                    <td class="text-left py-3 px-4"><?=$tache["projet_id"]?></td>
-                                    <td class="text-left py-3 px-4"><?=$tache["member_id"]?></td>
+                                    <td class="text-left py-3 px-4"><?=$tache["projet_name"]?></td>
+                                    <td class="text-left py-3 px-4"><?=$tache["fullname"]?></td>
                                     <td class="text-left py-3 px-4"><?=$tache["date"]?></td>
                                     <td class="text-left py-3 px-4"><?=$tache["status"]?></td>
                                     <td class="text-left py-3 px-4">
@@ -252,11 +254,6 @@ if($_SESSION["role"] !== "CTO"){
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                     <h3 class="text-xl font-semibold mb-2"><?= $category["name"] ?></h3>
                     <div class="flex justify-between items-center">
-                        <span class="text-sm text-blue-600 dark:text-blue-400">5 taches</span>
-                        <div class="flex space-x-2">
-                            <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit</button>
-                            <button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">Delete</button>
-                        </div>
                     </div>
                 </div>
                 <?php endforeach; ?>

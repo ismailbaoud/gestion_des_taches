@@ -22,13 +22,13 @@ class member extends User {
         }
     }
 
-    public function get_members($db){
+    static function get_members($db){
         try {
-            $query = "SELECT fullname, email FROM member";
+            $query = "SELECT * FROM member";
             $stmt = $db->prepare($query);
             $stmt->execute();
-            $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $stmt;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+           
         } catch(PDOException $e) {
             return false;
         }

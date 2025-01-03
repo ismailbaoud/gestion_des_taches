@@ -1,4 +1,14 @@
-<?php session_start();
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors',1);
+require_once __DIR__ . "/../../controullers/CTO/category_add.php";
+require_once __DIR__ . "/../../controullers/CTO/tache.php";
+require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
+require_once __DIR__ . "/../../controullers/CTO/projet.php";
+require_once __DIR__ . "/../../controullers/admin/member.php";
+require_once __DIR__ . "/../../controullers/admin/projet.php";
+
+
 if($_SESSION["role"] !== "admin"){
     header('location:../../../error/404.php');
 }?>
@@ -175,7 +185,7 @@ if($_SESSION["role"] !== "admin"){
                     </div>
                 </div>
             </div>
-
+            <br>
             <!-- Charts Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <!-- Project Statistics Chart -->
@@ -196,18 +206,23 @@ if($_SESSION["role"] !== "admin"){
         <div id="users-section" class="tab-content hidden">
             <h1 class="text-4xl font-bold text-center mb-8">User Management</h1>
             <div class="flex justify-end mb-6">
-                <button onclick="showModal('addUser')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    Add New User
-                </button>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <?php 
+                      $membe = new _member();
+                      $members = $membe->display();
+                      if($members == null){ $members = [];}
+                      foreach ($members as $member) : 
+                        
+                ?>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                            JD
+                            MR
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-xl font-semibold">John Doe</h3>
+                            <h3 class="text-xl font-semibold"><?=$member["fullname"]?></h3>
                             <p class="text-gray-600 dark:text-gray-300">Developer</p>
                         </div>
                     </div>
@@ -220,6 +235,7 @@ if($_SESSION["role"] !== "admin"){
                         <button class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
                     </div>
                 </div>
+                <?php endforeach;?>
                 
             </div>
         </div>
@@ -228,30 +244,30 @@ if($_SESSION["role"] !== "admin"){
         <div id="projects-section" class="tab-content hidden">
             <h1 class="text-4xl font-bold text-center mb-8">Project Management</h1>
             <div class="flex justify-end mb-6">
-                <button onclick="showModal('createProject')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                    Create New Project
-                </button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <?php 
+                      $proj = new all_projets();
+                      $projets = $proj->display();
+                      if($projets == null){ $projets = [];}
+                      foreach ($projets as $projet) : 
+                        
+                ?>
                 <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                    <h3 class="text-xl font-semibold mb-2">E-Commerce Platform</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">A full-featured online shopping platform with modern UI/UX.</p>
+                    <h3 class="text-xl font-semibold mb-2"><?=$projet["title"]?></h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4"><?=$projet["description"]?></p>
                     <div class="flex justify-between items-center mb-4">
-                        <span class="text-sm text-blue-600">Web Development</span>
-                        <span class="text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-2 py-1 rounded">Active</span>
+                        <span class="text-sm text-blue-600"><?=$projet["visibility"]?></span>
+                        <span class="text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-2 py-1 rounded"><?=$projet["status"]?></span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <div class="flex -space-x-2">
-                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">JD</div>
-                            <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm">SK</div>
-                            <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm">+3</div>
-                        </div>
                         <div class="flex space-x-2">
                             <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800">Edit</button>
                             <button class="text-red-600 dark:text-red-500 hover:text-red-800">Archive</button>
                         </div>
                     </div>
                 </div>
+                <?php endforeach;?>
             </div>
         </div>
 

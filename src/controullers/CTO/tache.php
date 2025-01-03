@@ -20,6 +20,7 @@ class _tache{
 
     public function display_taches(){
         $taches = tache::get_taches($this->db);
+        
         return $taches;
     }
 }
