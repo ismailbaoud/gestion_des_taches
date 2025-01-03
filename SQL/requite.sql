@@ -103,6 +103,7 @@ VALUES
 
 
 
+
 INSERT INTO member (fullname, email, password, cto_id)
 VALUES
 ('Alice Cooper', 'alice.cooper@example.com', '$2y$12$wD3xby1ovbTmmoc6FvjlPODcHgS56jWlPZ2TlgpSkmksTgEuJxtFG', 1), -- hashed 'memberpassword123'
