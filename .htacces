@@ -1,0 +1,7 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Redirect all requests to the front controller (index.php)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [L,QSA]

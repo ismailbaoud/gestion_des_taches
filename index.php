@@ -1,5 +1,42 @@
 <?php
-include_once "public/index.php";
+session_start();
+require_once "config/connectiondb.class.php";
+require_once "src/controullers/signup.php";
+include_once "src/modules/admin.php";
+include_once "src/modules/category.php";
+include_once "src/modules/CTO.class.php";
+include_once "src/modules/equipe.php";
+include_once "src/modules/member.classe.php";
+include_once "src/modules/projet.classe.php";
+require_once "src/modules/tache.class.php";
+require_once "src/controullers/member/tache.php";
+require_once "src/controullers/member/statistics.php";
+require_once "src/controullers/CTO/projet.php";
+require_once "src/controullers/CTO/category_add.php";
+require_once "src/controullers/CTO/tache.php";
+require_once "src/controullers/CTO/manage_equipe.php";
+require_once "src/controullers/admin/member.php";
+require_once "src/controullers/admin/projet.php";
+require_once "src/controullers/admin/statistics.php";
 
+
+
+$uri = parse_url($_SERVER["REQUEST_URI"])["path"];
+$routes = [
+    "/"=>"public/index.php",
+    "/index.php"=>"public/index.php",
+    "/login"=>"src/controullers/login.php",
+    "/signup"=>"src/controullers/signup.php",
+    "/logOut"=>"src/controullers/logOut.php",
+    "/admin_dashboard"=>"src/views/admin/dashboard_admin.php",
+    "/CTO_dashboard"=>"src/views/CTO/dashboard_CTO.php",
+    "/member_dashboard"=>"src/views/member/dashboard_member.php",
+];
+
+if(array_key_exists($uri,$routes)){
+    require $routes[$uri];
+}else{
+    require "error/404.php";
+}
 
 ?>

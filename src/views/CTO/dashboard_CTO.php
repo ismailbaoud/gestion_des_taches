@@ -1,12 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
-require_once __DIR__ . "/../../controullers/CTO/category_add.php";
-require_once __DIR__ . "/../../controullers/CTO/tache.php";
-require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
-require_once __DIR__ . "/../../controullers/CTO/projet.php";
+
 if($_SESSION["role"] !== "CTO"){
-    header('location:../../../error/404.php');
+    header('location: error/404.php ');
 }
 
 
@@ -102,7 +99,7 @@ if($_SESSION["role"] !== "CTO"){
                             <a href="#" class="nav-link" onclick="showTab('team')">Team</a>
                             <a href="#" class="nav-link" onclick="showTab('assign-tasks')">Assign Tasks</a>
                             <a href="#" class="nav-link" onclick="showTab('categories')">Categories</a>
-                            <a href="../../controullers/logOut.php" class="nav-link">Logout</a>
+                            <a href="/logOut" class="nav-link">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -267,7 +264,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="createProjectModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Create New Project</h3>
-            <form action="../../controullers/CTO/projet.php" method="post" id="createProjectForm" class="space-y-4">
+            <form action="src/controullers/CTO/projet.php" method="post" id="createProjectForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="projectName">Project Name</label>
                     <input type="text" id="projectName" name="name" required
@@ -307,7 +304,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="addMemberModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Add Team Member</h3>
-            <form action="../../controullers/CTO/manage_equipe.php" method="post" id="addMemberForm" class="space-y-4">
+            <form action="src/controullers/CTO/manage_equipe.php" method="post" id="addMemberForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="memberRole">Select Member</label>
               
@@ -349,7 +346,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="assignTaskModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Assign New Task</h3>
-            <form action="../../controullers/CTO/tache.php" method="post" id="assignTaskForm" class="space-y-4" method="post" action="/api/tasks/assign">
+            <form action="src/controullers/CTO/tache.php" method="post" id="assignTaskForm" class="space-y-4" method="post" action="/api/tasks/assign">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskTitle">Task Title</label>
                     <input type="text" id="taskTitle" name="title" required
@@ -453,7 +450,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="createCategoryModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Create New Category</h3>
-            <form action="../../controullers/CTO/category_add.php" method="post" id="createCategoryForm" class="space-y-4">
+            <form action="src/controullers/CTO/category_add.php" method="post" id="createCategoryForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="categoryName">Category Name</label>
                     <input type="text" id="categoryName" name="name" required
@@ -471,8 +468,8 @@ if($_SESSION["role"] !== "CTO"){
             </form>
         </div>
     </div>
-    <script src="../../public/assets/js/main.js"></script>
-    <script src="../../public/assets/js/navigation.js"></script>
+    <script src="public/assets/js/main.js"></script>
+    <script src="public/assets/js/navigation.js"></script>
 
     <script>
         // Initialize drag and drop

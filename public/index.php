@@ -1,10 +1,11 @@
 <?php
-session_start();
-session_destroy();
+
 error_reporting(E_ALL);
 ini_set('display_errors',1);
-require_once __DIR__ . "/../src/controullers/CTO/projet.php";
 
+if (!empty($_SESSION["infoerr"])) {
+    echo $_SESSION["infoerr"];
+    session_destroy();}
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light">
@@ -13,9 +14,9 @@ require_once __DIR__ . "/../src/controullers/CTO/projet.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Management Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/auth.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="public/assets/js/navigation.js"></script>
+    <script src="public/assets/js/auth.js"></script>
+    <script src="public/assets/js/theme.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -82,7 +83,7 @@ require_once __DIR__ . "/../src/controullers/CTO/projet.php";
                 <!-- Login Form -->
                 <div id="login-form" class="auth-form">
                     <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Login</h2>
-                    <form action="../src/controullers/login.php" method="post" class="space-y-4">
+                    <form action="/login" method="post" class="space-y-4">
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
                             <input type="email" name="email" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
@@ -102,7 +103,7 @@ require_once __DIR__ . "/../src/controullers/CTO/projet.php";
                 <!-- Sign Up Form -->
                 <div id="signup-form" class="auth-form hidden">
                     <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Sign Up</h2>
-                    <form action="../src/controullers/signup.php" method="post" class="space-y-4">
+                    <form action="/signup" method="post" class="space-y-4">
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
                             <input type="text" name="username" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>

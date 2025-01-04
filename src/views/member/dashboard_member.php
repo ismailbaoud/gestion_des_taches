@@ -1,13 +1,6 @@
 <?php
-require_once __DIR__ . "/../../controullers/CTO/category_add.php";
-require_once __DIR__ . "/../../controullers/CTO/tache.php";
-require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
-require_once __DIR__ . "/../../controullers/CTO/projet.php";
-require_once __DIR__ . "/../../controullers/member/tache.php";
-
-
 if($_SESSION["role"] !== "member"){
-    header('location:../../../error/404.php');
+    header('location: error/404.php ');
 }
 ?>
 <!DOCTYPE html>
@@ -61,7 +54,7 @@ if($_SESSION["role"] !== "member"){
                     <div class="flex space-x-4">
                         <a href="#" class="nav-link active">My Tasks</a>
                         <a href="#" class="nav-link" onclick="showProfileModal()">Profile</a>
-                        <a href="../../controullers/logOut.php" class="nav-link">Logout</a>
+                        <a href="/logOut" class="nav-link">Logout</a>
                     </div>
                 </div>
             </div>

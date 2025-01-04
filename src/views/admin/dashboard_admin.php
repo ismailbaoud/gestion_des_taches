@@ -1,18 +1,11 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
-require_once __DIR__ . "/../../controullers/CTO/category_add.php";
-require_once __DIR__ . "/../../controullers/CTO/tache.php";
-require_once __DIR__ . "/../../controullers/CTO/manage_equipe.php";
-require_once __DIR__ . "/../../controullers/CTO/projet.php";
-require_once __DIR__ . "/../../controullers/admin/member.php";
-require_once __DIR__ . "/../../controullers/admin/projet.php";
-require_once __DIR__ . "/../../controullers/admin/statistics.php";
 
 
 
 if($_SESSION["role"] !== "admin"){
-    header('location:../../../error/404.php');
+    header('location: error/404.php ');
 }?>
 <!DOCTYPE html>
 
@@ -67,7 +60,7 @@ if($_SESSION["role"] !== "admin"){
                         <a href="#" class="nav-link" onclick="showTab('users')">Users</a>
                         <a href="#" class="nav-link" onclick="showTab('projects')">Projects</a>
                         <a href="#" class="nav-link" onclick="showTab('settings')">Settings</a>
-                        <a href="../../controullers/logOut.php" class="nav-link">Logout</a>
+                        <a href="/logOut" class="nav-link">Logout</a>
                     </div>
                 </div>
             </div>

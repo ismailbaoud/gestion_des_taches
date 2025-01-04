@@ -15,7 +15,7 @@ class member extends User {
         try {
             $query = "INSERT INTO member (fullname, email, password) VALUES (?, ?, ?)";
             $stmt = $db->prepare($query);
-            $stmt->execute([$this->fullname, $this->email, $this->password]);
+            $stmt->execute([$this->fullname, $this->email, password_hash($this->password,PASSWORD_DEFAULT)]);
             return true;
         } catch(PDOException $e) {
             return false;

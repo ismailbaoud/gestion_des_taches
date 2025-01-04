@@ -1,11 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_start();
-include_once "../../src/modules/admin.php";
-include_once "../../src/modules/member.classe.php";
-include_once "../../src/modules/CTO.class.php";
-include_once "../../config/connectiondb.class.php";
+
 
 class login{
     private $username;
@@ -91,22 +87,46 @@ class login{
         }
     }
 }
-
+$passregex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
+$emailregex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
+$isvalide = null;
 if(isset($_POST["btn_login"])){
     $email = $_POST["email"];
     $password = $_POST["password"];
-    $user = new login();
-    $is_a = $user->loginset($email, $password);
-    if($is_a == "admin"){
-        header("location: ../views/admin/dashboard_admin.php");
+    if(empty($password) || !preg_match($passregex, $password)){
+        $isvalide = false;
+        $_SESSION["errpass"] = "invalide password please entervalide name ";
+    }else{
+        $_SESSION["errname"] = "valide name";
 
     }
-    elseif($is_a == "CTO"){
-        header("location: ../views/CTO/dashboard_CTO.php");
-    }
-    elseif($is_a == "member"){
-        header("location: ../views/member/dashboard_member.php");
-    }
+    if(empty($email) || !preg_match($emailregex, $email)){
+        $isvalide = false;
+        $_SESSION["erremail"]  = "invalide email please entervalide email ";
+    }else{
+        $_SESSION["erremail"] = "valide name";
+
+    }if($isvalide){
+
+        $user = new login();
+        $is_a = $user->loginset($email, $password);
+        if($is_a == "admin"){
+            header("location: /admin_dashboard");
+    
+        }
+        elseif($is_a == "CTO"){
+            header("location: /CTO_dashboard");
+        }
+        elseif($is_a == "member"){
+            header("location: /member_dashboard");
+        }else{
+            header("location: /");
+            
+        }
+    }else{
+        $_SESSION["infoerr"] = "<script>alert('invalide register ,please enter valide informations agine status : #".$_SESSION["erremail"]."   #".$_SESSION["errpass"]."')</script>";
+        header('location: /');
+     }
 
 }
 ?>

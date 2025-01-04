@@ -1,11 +1,6 @@
 <?php 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once __DIR__ . "/../../../config/connectiondb.class.php";
-require_once __DIR__ . "/../../modules/member.classe.php";
-require_once __DIR__ . "/../../modules/tache.class.php";
-require_once __DIR__ . "/../../modules/projet.classe.php";
-require_once __DIR__ . "/../../modules/member.classe.php";
 
 
 class statistics{

@@ -21,7 +21,7 @@
         <p class="mt-4 text-3xl text-gray-800">Oops! Page not found.</p>
         <p class="mt-2 text-gray-600">The page you are looking for does not exist.</p>
         
-        <a href="../public/index.php" class="mt-6 inline-block px-6 py-3 text-white bg-blue-600 rounded hover:bg-blue-700 transition duration-300">Go to Homepage</a>
+        <a href="/" class="mt-6 inline-block px-6 py-3 text-white bg-blue-600 rounded hover:bg-blue-700 transition duration-300">Go to Homepage</a>
     </div>
 </body>
 </html>

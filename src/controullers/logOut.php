@@ -1,4 +1,4 @@
 <?php
-
-header('location: ../../public/index.php');
+session_destroy();
+header('location: /');
 ?>

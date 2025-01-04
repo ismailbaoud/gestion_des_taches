@@ -1,9 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_start();
-require_once __DIR__ . "/../../modules/equipe.php";
-require_once __DIR__ . "/../../../config/connectiondb.class.php";
 
 class equipe_handling {
     private $db;
@@ -41,13 +38,13 @@ if(isset($_POST["btn_category"])) {
     $name = $_POST["name"];
     $category = new category_handling();
     $category->getdata($name);
-    header("location: ../../views/CTO/dashboard_CTO.php");
+    header("location: src/views/CTO/dashboard_CTO.php");
 }
 
 if(isset($_POST["btn_equipe"])){
     $id = $_POST["role"];
     $res = new equipe_handling();
     $res->add_member($id,$_SESSION["cto_id"]) ;
-    header("location: ../../views/CTO/dashboard_CTO.php");
+    header("location: src/views/CTO/dashboard_CTO.php");
 }
 ?>

@@ -1,8 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once __DIR__ . "/../../modules/category.php";
-require_once __DIR__ . "/../../../config/connectiondb.class.php";
 
 class category_handling {
     private $db;
@@ -34,12 +32,12 @@ class category_handling {
 }
 
 if(isset($_POST["btn_category"])) {
-    session_start();
+   
     $name = $_POST["name"];
     $id = $_SESSION["cto_id"];
     
     $category = new category_handling();
     $category->getdata($name,$id);
-    header("location: ../../views/CTO/dashboard_CTO.php");
+    header("location: src/views/CTO/dashboard_CTO.php");
 }
 ?>

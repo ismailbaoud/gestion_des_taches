@@ -13,7 +13,7 @@ ini_set('display_errors', 1);
             try {
                 $query = "INSERT INTO CTO (fullname, email, password) VALUES (?, ?, ?)";
                 $stmt = $db->prepare($query);
-                $stmt->execute([$this->fullname, $this->email, $this->password]);
+                $stmt->execute([$this->fullname, $this->email, password_hash($this->password,PASSWORD_DEFAULT)]);
                 return true;
             } catch(PDOException $e) {
                 return false;
