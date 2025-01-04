@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors',1);
 
 
+include_once "src/controullers/admin/CTO_handl.php";
 
 if($_SESSION["role"] !== "admin"){
     header('location: error/404.php ');
@@ -59,6 +60,7 @@ if($_SESSION["role"] !== "admin"){
                         <a href="#" class="nav-link active" onclick="showTab('dashboard')">Dashboard</a>
                         <a href="#" class="nav-link" onclick="showTab('users')">Users</a>
                         <a href="#" class="nav-link" onclick="showTab('projects')">Projects</a>
+                        <a href="#" class="nav-link" onclick="showTab('CTOs')">Projects</a>
                         <a href="#" class="nav-link" onclick="showTab('settings')">Settings</a>
                         <a href="/logOut" class="nav-link">Logout</a>
                     </div>
@@ -232,10 +234,15 @@ if($_SESSION["role"] !== "admin"){
             </div>
         </div>
 
+        
+
         <!-- Projects Section -->
         <div id="projects-section" class="tab-content hidden">
             <h1 class="text-4xl font-bold text-center mb-8">Project Management</h1>
             <div class="flex justify-end mb-6">
+            <button onclick="showModal('CTOModal')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+    Add New CTO 
+</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <?php 
@@ -250,6 +257,7 @@ if($_SESSION["role"] !== "admin"){
                     <p class="text-gray-600 dark:text-gray-300 mb-4"><?=$projet["description"]?></p>
                     <div class="flex justify-between items-center mb-4">
                         <span class="text-sm text-blue-600"><?=$projet["visibility"]?></span>
+                        <span class="text-sm text-blue-600"><?=$projet["fullname"]?></span>
                         <span class="text-sm bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-2 py-1 rounded"><?=$projet["status"]?></span>
                     </div>
                     <div class="flex justify-between items-center">
@@ -262,6 +270,7 @@ if($_SESSION["role"] !== "admin"){
             </div>
         </div>
 
+        
         <!-- Settings Section -->
         <div id="settings-section" class="tab-content hidden">
             <h1 class="text-4xl font-bold text-center mb-8">System Settings</h1>
@@ -315,7 +324,7 @@ if($_SESSION["role"] !== "admin"){
                 </div>
 
                 <div class="mt-6 flex justify-end space-x-2">
-                    <button class="px-4 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <button type="button" onclick="hideModal('settings-section')" class="px-4 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         Cancel
                     </button>
                     <button class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
@@ -325,6 +334,39 @@ if($_SESSION["role"] !== "admin"){
             </div>
         </div>
     </div>
+    <div id="CTOModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
+        <h3 class="text-xl font-bold mb-4">Add New CTO</h3>
+        <form action="/add_CTO" method="post" id="CTOModalForm" class="space-y-4">
+        <div>
+                    <label class="block text-sm font-medium mb-1" for="taskProject">CTO</label>
+                    <select id="taskProject" name="CTO_id" required
+                        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                        <option name="">Select a CTO</option>
+                        <?php 
+                      $CT = new add_CTO();
+                      $CTOs = $CT->display_members();
+                      var_dump($CTOs);
+                      if($CTOs == null){ $CTOs = [];}
+                      foreach ($CTOs as $CTO) :?>
+                            <option value="<?= htmlspecialchars($CTO['member_id']) ?>">
+                                <?= htmlspecialchars($CTO['fullname']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="hideModal('CTOModal')"
+                    class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
+                    Cancel
+                </button>
+                <button type="submit" name="CTO_create" value="category" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    Add CTO
+                </button>
+            </div>
+        </form>
+    </div>
+</div> 
     <style>
         .nav-link {
             @apply text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors;
@@ -396,13 +438,13 @@ if($_SESSION["role"] !== "admin"){
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
                         label: 'Completed Projects',
-                        data: [12, 19, 15, 25, 22, 30],
+                        data: [<?=$complete_projects + 1?>, <?=$complete_projects - 7?>, <?=$complete_projects + 3?>, <?=$complete_projects -2?> , <?=$complete_projects+4?>],
                         borderColor: '#10B981',
                         tension: 0.4,
                         fill: false
                     }, {
                         label: 'Active Projects',
-                        data: [8, 15, 20, 18, 24, 28],
+                        data: [<?=$active_projects -3?>, <?=$active_projects+5?>, <?=$active_projects-1?>, <?=$active_projects +4?>, <?=$active_projects -2?>, <?=$active_projects + 5?>],
                         borderColor: '#3B82F6',
                         tension: 0.4,
                         fill: false
@@ -436,9 +478,9 @@ if($_SESSION["role"] !== "admin"){
             new Chart(taskDist, {
                 type: 'doughnut',
                 data: {
-                    labels: ['To Do', 'In Progress', 'Review', 'Completed'],
+                    labels: ['To Do', 'In Progress', 'Completed'],
                     datasets: [{
-                        data: [25, 40, 15, 20],
+                        data: [<?=$total_taches?>, <?=$total_members?>, <?=$active_projects?>],
                         backgroundColor: [
                             '#EF4444', // Red for To Do
                             '#F59E0B', // Yellow for In Progress
@@ -472,13 +514,13 @@ if($_SESSION["role"] !== "admin"){
         });
 
         // Modal Management
-        function showModal(modalName) {
-            document.getElementById(modalName + 'Modal').classList.remove('hidden');
-        }
+function showModal(modalName) {
+    document.getElementById(modalName).classList.remove('hidden');
+}
 
-        function hideModal(modalName) {
-            document.getElementById(modalName + 'Modal').classList.add('hidden');
-        }
+function hideModal(modalName) {
+    document.getElementById(modalName).classList.add('hidden');
+}
 
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {

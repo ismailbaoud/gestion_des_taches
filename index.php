@@ -21,6 +21,7 @@ require_once "src/controullers/admin/statistics.php";
 
 
 
+
 $uri = parse_url($_SERVER["REQUEST_URI"])["path"];
 $routes = [
     "/"=>"public/index.php",
@@ -31,6 +32,8 @@ $routes = [
     "/admin_dashboard"=>"src/views/admin/dashboard_admin.php",
     "/CTO_dashboard"=>"src/views/CTO/dashboard_CTO.php",
     "/member_dashboard"=>"src/views/member/dashboard_member.php",
+    "/add_CTO"=>"src/controullers/admin/CTO_handl.php"
+
 ];
 
 if(array_key_exists($uri,$routes)){

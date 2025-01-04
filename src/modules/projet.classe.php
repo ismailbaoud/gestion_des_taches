@@ -26,7 +26,7 @@ class projet{
 
     static function get_all_projects($conn){
         try {
-            $query = "SELECT * FROM projet ORDER BY title ASC ";
+            $query = "SELECT p.title, p.description,p.status ,p.visibility , c.fullname FROM projet p inner join CTO c ON p.cto_id = c.cto_id ORDER BY title ASC ";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

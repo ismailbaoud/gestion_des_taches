@@ -88,23 +88,15 @@ class login{
     }
 }
 $passregex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
-$emailregex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
-$isvalide = null;
+$isvalide = true;
 if(isset($_POST["btn_login"])){
     $email = $_POST["email"];
     $password = $_POST["password"];
-    if(empty($password) || !preg_match($passregex, $password)){
-        $isvalide = false;
-        $_SESSION["errpass"] = "invalide password please entervalide name ";
-    }else{
-        $_SESSION["errname"] = "valide name";
-
-    }
     if(empty($email) || !preg_match($emailregex, $email)){
         $isvalide = false;
         $_SESSION["erremail"]  = "invalide email please entervalide email ";
     }else{
-        $_SESSION["erremail"] = "valide name";
+        $_SESSION["erremail"] = "valide email";
 
     }if($isvalide){
 
@@ -124,7 +116,7 @@ if(isset($_POST["btn_login"])){
             
         }
     }else{
-        $_SESSION["infoerr"] = "<script>alert('invalide register ,please enter valide informations agine status : #".$_SESSION["erremail"]."   #".$_SESSION["errpass"]."')</script>";
+        $_SESSION["infoerr"] = "<script>alert('invalide register ,please enter valide informations agine status : #".$_SESSION["erremail"]."')</script>";
         header('location: /');
      }
 
