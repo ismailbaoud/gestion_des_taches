@@ -131,66 +131,6 @@ if (!empty($_SESSION["login_success"])) {
                 </div>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-4">Recent Projects</h3>
-                    <div class="space-y-4">
-                        <div
-                            class="bg-white dark:bg-dark-card rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <h4 class="text-lg font-semibold">E-Commerce Platform</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">A full-featured online shopping
-                                platform</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-blue-600">Web Development</span>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">Active</span>
-                            </div>
-                        </div>
-                        <div
-                            class="bg-white dark:bg-dark-card rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <h4 class="text-lg font-semibold">Mobile App</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Cross-platform mobile application
-                            </p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-blue-600">Mobile Development</span>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">In Progress</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-4">Recent Users</h3>
-                    <div class="space-y-4">
-                        <div
-                            class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
-                                    JD</div>
-                                <div class="ml-3">
-                                    <p class="font-semibold">John Doe</p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Developer</p>
-                                </div>
-                            </div>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">2 hours ago</span>
-                        </div>
-                        <div
-                            class="flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors">
-                            <div class="flex items-center">
-                                <div
-                                    class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white text-sm">
-                                    SJ</div>
-                                <div class="ml-3">
-                                    <p class="font-semibold">Sarah Johnson</p>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Designer</p>
-                                </div>
-                            </div>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">5 hours ago</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- System Status -->
             <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                 <h3 class="text-xl font-semibold mb-4">System Status</h3>
@@ -561,7 +501,7 @@ if (!empty($_SESSION["login_success"])) {
                         fill: false
                     }, {
                         label: 'Active Projects',
-                        data: [<?= $active_projects - 3 ?>, <?= $active_projects + 5 ?>, <?= $active_projects - 1 ?>, <?= $active_projects + 4 ?>, <?= $active_projects - 2 ?>, <?= $active_projects + 5 ?>],
+                        data: [<?= $active_projects ?>, <?= $active_projects + 5 ?>, <?= $active_projects - 1 ?>, <?= $active_projects + 4 ?>, <?= $active_projects - 2 ?>, <?= $active_projects + 5 ?>],
                         borderColor: '#3B82F6',
                         tension: 0.4,
                         fill: false
@@ -597,7 +537,7 @@ if (!empty($_SESSION["login_success"])) {
                 data: {
                     labels: ['To Do', 'In Progress', 'Completed'],
                     datasets: [{
-                        data: [<?= $total_taches ?>, <?= $total_members ?>, <?= $active_projects ?>],
+                        data: [<?= $todo ?>, <?= $doing ?>, <?= $done ?>],
                         backgroundColor: [
                             '#EF4444', // Red for To Do
                             '#F59E0B', // Yellow for In Progress

@@ -40,12 +40,34 @@ class statistics
 
         return $taches;
     }
+    public function todo()
+    {
+        $taches = tache::get_todo($this->db);
+
+        return $taches;
+    }public function doing()
+    {
+        $taches = tache::get_doing($this->db);
+
+        return $taches;
+    }
+    public function done()
+    {
+        $taches = tache::get_done($this->db);
+
+        return $taches;
+    }
+
+    
 
 }
 $total_members = 0;
 $complete_projects = 0;
 $active_projects = 0;
 $total_taches = 0;
+$todo = 0;
+$doing = 0;
+$done = 0;
 
 $stat = new statistics();
 $members = $stat->members();
@@ -66,6 +88,22 @@ $stat = new statistics();
 $taches = $stat->taches();
 foreach ($taches as $tache) {
     $total_taches++;
+}
+/////////////////:
+$stat = new statistics();
+$taches = $stat->todo();
+foreach ($taches as $tache) {
+    $todo++;
+}
+$stat = new statistics();
+$taches = $stat->doing();
+foreach ($taches as $tache) {
+    $doing++;
+}
+$stat = new statistics();
+$taches = $stat->done();
+foreach ($taches as $tache) {
+    $done++;
 }
 
 ?>

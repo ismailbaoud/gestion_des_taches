@@ -69,7 +69,7 @@ class projet
     static function project_complet($conn)
     {
         try {
-            $query = "SELECT * FROM projet where status = 'COMPLETE'";
+            $query = "SELECT * FROM projet where status = 'TERMINER'";
 
             $stmt = $conn->prepare($query);
             $stmt->execute();

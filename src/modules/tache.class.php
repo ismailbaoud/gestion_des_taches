@@ -126,6 +126,54 @@ class tache
     }
 
 
+    static function get_todo($conn)
+    {
+        try {
+            $query = "SELECT * FROM tache where status = 'A_FAIRE'";
+
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+
+        }
+
+    }
+
+    static function get_doing($conn)
+    {
+        try {
+            $query = "SELECT * FROM tache where status = 'EN_COURS'";
+
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+
+        }
+
+    }
+
+    static function get_done($conn)
+    {
+        try {
+            $query = "SELECT * FROM tache where status = 'TERMINER'";
+
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error displaying categories: " . $e->getMessage());
+
+        }
+
+    }
+
+    
+
+
 
 
 }
