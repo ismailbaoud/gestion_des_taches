@@ -5,7 +5,7 @@ ini_set('display_errors',1);
 if($_SESSION["role"] !== "CTO"){
     header('location: error/404.php ');
 }
-
+$CSRF = generateCsrfToken()
 
 ?>
 <!DOCTYPE html>
@@ -293,7 +293,7 @@ if($_SESSION["role"] !== "CTO"){
 
                     </select>
                 </div>
-                
+                <input type="hidden" name="csrf_token" value="<?=$CSRF?>">
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="hideModal('createProject')"
                         class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">

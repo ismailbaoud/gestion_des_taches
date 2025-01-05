@@ -26,15 +26,21 @@ class _projet{
         return $projets;
     }
 }
-if(isset($_POST["btn_project"])){
+if(isset($_POST["btn_project"]) && isset($_SESSION["csrf_token"])){
 session_start();
-    $name = $_POST["name"];
-    $description = $_POST["description"];
-    $visibility = $_POST["visibility"];
+$CSRF = $_POST["csrf_token"];
+if(isset($_SESSION['csrf_token']) || $_SESSION['csrf_token']=== $CSRF){
+    $name = htmlspecialchars(trim($_POST["name"]));
+    $description = htmlspecialchars(trim($_POST["description"]));
+    $visibility = htmlspecialchars(trim($_POST["visibility"]));
     $id = $_SESSION["cto_id"];
     $res = new _projet();
     $res->add_project($name, $description,$visibility,$id);
     header("location: /CTO_dashboard");
+
+}else{
+    header("location: /logOut");
+}
 
 }
 ?>

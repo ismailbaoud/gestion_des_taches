@@ -14,6 +14,7 @@ require_once "src/controullers/member/statistics.php";
 require_once "src/controullers/CTO/projet.php";
 require_once "src/controullers/CTO/category_add.php";
 require_once "src/controullers/CTO/tache.php";
+require_once "src/controullers/CTO/CSRF.php";
 require_once "src/controullers/CTO/manage_equipe.php";
 require_once "src/controullers/admin/member.php";
 require_once "src/controullers/admin/projet.php";
