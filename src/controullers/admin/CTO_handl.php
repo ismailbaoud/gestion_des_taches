@@ -45,6 +45,13 @@ class add_CTO{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function display_CTO(){
+        $query = "select * from CTO";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function display() {
         $CTOs = CTO::get_all_CTOs($this->db);
         return $CTOs;
@@ -63,6 +70,7 @@ if(isset($_POST["CTO_create"])){
     
     $res = new add_CTO();
     $res->delet($id);
+    header("location:/admin_dashboard");
 }
 
 

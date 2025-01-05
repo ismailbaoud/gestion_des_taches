@@ -38,6 +38,6 @@ if(isset($_POST["btn_category"])) {
     
     $category = new category_handling();
     $category->getdata($name,$id);
-    header("location: src/views/CTO/dashboard_CTO.php");
+    header("location: /CTO_dashboard");
 }
 ?>

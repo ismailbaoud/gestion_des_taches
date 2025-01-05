@@ -23,7 +23,7 @@ class equipe {
     }
     static function get_equipe($db,$id){
         try {
-            $query = "SELECT member_id,fullname, email FROM member where CTO_id = $id";
+            $query = "SELECT member_id,fullname, email FROM member where CTO_id = $id and status = 'active'";
             $stmt = $db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +33,7 @@ class equipe {
     }
     static function get_all_equipe($db){
         try {
-            $query = "SELECT member_id,fullname, email FROM member where CTO_id is null";
+            $query = "SELECT member_id,fullname, email FROM member where CTO_id is null and status = 'active'";
             $stmt = $db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

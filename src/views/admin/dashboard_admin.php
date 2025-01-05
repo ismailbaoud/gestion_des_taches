@@ -60,7 +60,7 @@ if($_SESSION["role"] !== "admin"){
                         <a href="#" class="nav-link active" onclick="showTab('dashboard')">Dashboard</a>
                         <a href="#" class="nav-link" onclick="showTab('users')">Users</a>
                         <a href="#" class="nav-link" onclick="showTab('projects')">Projects</a>
-                        <a href="#" class="nav-link" onclick="showTab('CTOs')">Projects</a>
+                        <a href="#" class="nav-link" onclick="showTab('CTOs')">CTOs</a>
                         <a href="#" class="nav-link" onclick="showTab('settings')">Settings</a>
                         <a href="/logOut" class="nav-link">Logout</a>
                     </div>
@@ -226,24 +226,64 @@ if($_SESSION["role"] !== "admin"){
                         <p class="text-gray-600 dark:text-gray-300"><?=$member["email"]?></p>
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
-                        <button class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                    <form action="/delete_by_admin" method="POST">
+                    <input type="text" name="member_id" value="<?=$member["member_id"]?>" class="hidden" required>
+
+                    <button name="deactive"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                    </form>
                     </div>
                 </div>
                 <?php endforeach;?>
                 
             </div>
         </div>
+        <!-- CTOs Section -->
 
-        
-
-        <!-- Projects Section -->
-        <div id="projects-section" class="tab-content hidden">
-            <h1 class="text-4xl font-bold text-center mb-8">Project Management</h1>
+        <div id="CTOs-section" class="tab-content hidden">
+            <h1 class="text-4xl font-bold text-center mb-8">CTOs Management</h1>
+            <div class="flex justify-end mb-6">
+            </div>
             <div class="flex justify-end mb-6">
             <button onclick="showModal('CTOModal')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
     Add New CTO 
 </button>
             </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <?php 
+                      $CT = new add_CTO();
+                      $CTOs = $CT->display_CTO();
+                      if($CTOs == null){ $CTOs = [];}
+                      foreach ($CTOs as $CTO) : 
+                        
+                ?>
+                <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                            MR
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold"><?=$CTO["fullname"]?></h3>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-gray-600 dark:text-gray-300"><?=$CTO["email"]?></p>
+                    </div>
+                    <div class="mt-4 flex justify-end space-x-2">
+                    <form action="/delete_by_admin" method="POST">
+                    <input type="text" name="cto_id" value="<?=$CTO["cto_id"]?>" class="hidden" required>
+
+                    <button name="deactive_CTO"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                    </form>                    </div>
+                </div>
+                <?php endforeach;?>
+                
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div id="projects-section" class="tab-content hidden">
+            <h1 class="text-4xl font-bold text-center mb-8">Project Management</h1>
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <?php 
                       $proj = new all_projets();
@@ -262,8 +302,11 @@ if($_SESSION["role"] !== "admin"){
                     </div>
                     <div class="flex justify-between items-center">
                         <div class="flex space-x-2">
-                            <button class="text-red-600 dark:text-red-500 hover:text-red-800">Archive</button>
-                        </div>
+                        <form action="/delete_by_admin" method="POST">
+                    <input type="text" name="projet_id" value="<?=$projet["id"]?>" class="hidden" required>
+
+                    <button name="deactive_projet"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                    </form>                         </div>
                     </div>
                 </div>
                 <?php endforeach;?>

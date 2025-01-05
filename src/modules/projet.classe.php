@@ -26,7 +26,7 @@ class projet{
 
     static function get_all_projects($conn){
         try {
-            $query = "SELECT p.title, p.description,p.status ,p.visibility , c.fullname FROM projet p inner join CTO c ON p.cto_id = c.cto_id ORDER BY title ASC ";
+            $query = "SELECT p.title,p.id, p.description,p.status ,p.visibility , c.fullname FROM projet p inner join CTO c ON p.cto_id = c.cto_id where p.status = 'ACTIVE' ORDER BY title ASC ";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -37,7 +37,7 @@ class projet{
     }
     static function get_projects($conn,$id){
             try {
-                $query = "SELECT id,title, description,status,visibility FROM projet where cto_id = $id ORDER BY title ASC ";
+                $query = "SELECT id,title, description,status,visibility FROM projet where cto_id = $id and status = 'ACTIVE' ORDER BY title ASC ";
                 $stmt = $conn->prepare($query);
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ class projet{
 
     static function get_public_projects($conn){
         try {
-            $query = "SELECT id,title, description,status FROM projet where visibility = 'public' ORDER BY title ASC ";
+            $query = "SELECT id,title, description,status FROM projet where visibility = 'public' and status = 'ACTIVE' ORDER BY title ASC ";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

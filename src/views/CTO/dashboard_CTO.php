@@ -137,8 +137,11 @@ if($_SESSION["role"] !== "CTO"){
                     </div>
                     <div class="mt-4 flex justify-end space-x-2">
                         <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit</button>
-                        <button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">Delete</button>
-                    </div>
+                        <form action="/delete_by_CTO" method="POST">
+                    <input type="text" name="projet_id" value="<?=$projet["id"]?>" class="hidden" required>
+
+                    <button name="deactive_projet"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                    </form>                     </div>
                 </div>
                 <?php endforeach?>
             </div>
@@ -171,9 +174,11 @@ if($_SESSION["role"] !== "CTO"){
                     </div>
                     <p class="text-gray-600 dark:text-gray-300 mb-4"><?=$member["email"]?></p>
                     <div class="flex justify-end space-x-2">
-                        <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit</button>
-                        <button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">Remove</button>
-                    </div>
+                        <form action="/delete_by_CTO" method="POST">
+                    <input type="text" name="member_id" value="<?=$member["member_id"]?>" class="hidden" required>
+
+                    <button name="deactive_member"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                    </form>                     </div>
                 </div>
                 <?php endforeach;?>
             </div>
@@ -218,8 +223,11 @@ if($_SESSION["role"] !== "CTO"){
                                     <td class="text-left py-3 px-4"><?=$tache["status"]?></td>
                                     <td class="text-left py-3 px-4">
                         <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit | </button>
-                        <button class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"> | Remove</button>
-                    </td>
+                        <form action="/delete_by_CTO" method="POST">
+                    <input type="text" name="tache_id" value="<?=$tache["id"]?>" class="hidden" required>
+
+                    <button name="deactive_tache"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                    </form>                     </td>
 
 
                                 </tr>
@@ -264,7 +272,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="createProjectModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Create New Project</h3>
-            <form action="src/controullers/CTO/projet.php" method="post" id="createProjectForm" class="space-y-4">
+            <form action="/projet_create" method="post" id="createProjectForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="projectName">Project Name</label>
                     <input type="text" id="projectName" name="name" required
@@ -304,7 +312,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="addMemberModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Add Team Member</h3>
-            <form action="src/controullers/CTO/manage_equipe.php" method="post" id="addMemberForm" class="space-y-4">
+            <form action="/manage_equipe" method="post" id="addMemberForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="memberRole">Select Member</label>
               
@@ -346,7 +354,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="assignTaskModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Assign New Task</h3>
-            <form action="src/controullers/CTO/tache.php" method="post" id="assignTaskForm" class="space-y-4" method="post" action="/api/tasks/assign">
+            <form action="/tache" method="post" id="assignTaskForm" class="space-y-4" method="post" action="/api/tasks/assign">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskTitle">Task Title</label>
                     <input type="text" id="taskTitle" name="title" required
@@ -450,7 +458,7 @@ if($_SESSION["role"] !== "CTO"){
     <div id="createCategoryModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Create New Category</h3>
-            <form action="src/controullers/CTO/category_add.php" method="post" id="createCategoryForm" class="space-y-4">
+            <form action="/category" method="post" id="createCategoryForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="categoryName">Category Name</label>
                     <input type="text" id="categoryName" name="name" required

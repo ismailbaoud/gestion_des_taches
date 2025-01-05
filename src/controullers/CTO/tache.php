@@ -34,6 +34,6 @@ if(isset($_POST["btn_tache"])){
 
     $res = new _tache();
     $res->add_tache($title,$description,$projet_id,$member_id,$priority,$category_id,$date);
-    header("location: ../../views/CTO/dashboard_CTO.php");
+    header("location: /CTO_dashboard");
 }
 ?>

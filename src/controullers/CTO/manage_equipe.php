@@ -38,13 +38,13 @@ if(isset($_POST["btn_category"])) {
     $name = $_POST["name"];
     $category = new category_handling();
     $category->getdata($name);
-    header("location: src/views/CTO/dashboard_CTO.php");
+    header("location: /CTO_dashboard");
 }
 
 if(isset($_POST["btn_equipe"])){
     $id = $_POST["role"];
     $res = new equipe_handling();
     $res->add_member($id,$_SESSION["cto_id"]) ;
-    header("location: src/views/CTO/dashboard_CTO.php");
+    header("location: /CTO_dashboard");
 }
 ?>

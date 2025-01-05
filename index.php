@@ -32,7 +32,13 @@ $routes = [
     "/admin_dashboard"=>"src/views/admin/dashboard_admin.php",
     "/CTO_dashboard"=>"src/views/CTO/dashboard_CTO.php",
     "/member_dashboard"=>"src/views/member/dashboard_member.php",
-    "/add_CTO"=>"src/controullers/admin/CTO_handl.php"
+    "/add_CTO"=>"src/controullers/admin/CTO_handl.php",
+    "/delete_by_admin"=>"src/controullers/admin/delete.php",
+    "/delete_by_CTO"=>"src/controullers/CTO/delete.php",
+    "/projet_create"=>"src/controullers/CTO/projet.php",
+    "/manage_equipe"=>"src/controullers/CTO/manage_equipe.php",
+    "/tache"=>"src/controullers/CTO/tache.php",
+    "/category"=>"src/controullers/CTO/category_add.php"
 
 ];
 

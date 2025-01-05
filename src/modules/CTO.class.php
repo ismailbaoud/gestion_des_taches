@@ -22,7 +22,7 @@ ini_set('display_errors', 1);
 
         static function get_CTO($db){
             try {
-                $query = "SELECT fullname, email FROM CTO";
+                $query = "SELECT fullname, email FROM CTO where status = 'active'";
                 $stmt = $db->prepare($query);
                 $stmt->execute();
                 $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +34,7 @@ ini_set('display_errors', 1);
         
         static function check_CTO($db){
             try {
-                $query = "SELECT id, fullname as username, email FROM CTO WHERE email = ? AND password = ?";
+                $query = "SELECT id, fullname as username, email FROM CTO WHERE email = ? AND password = ? and status = 'active'";
                 $stmt = $db->prepare($query);
                 $stmt->execute([$email, $password]);
                 return $stmt;
@@ -43,13 +43,13 @@ ini_set('display_errors', 1);
             }
         }
         static function check_email($db,$email){
-            $check_query = "SELECT email FROM CTO WHERE email = ?";
+            $check_query = "SELECT email FROM CTO WHERE email = ? where status = 'active'";
             $check_stmt = $db->prepare($check_query);
             $check_stmt->execute([$email]);
             return $check_stmt;
         }
         static function is_CTO($db){
-            $query = "SELECT fullname as username, email FROM CTO WHERE email = :email AND password = :password";
+            $query = "SELECT fullname as username, email FROM CTO WHERE email = :email AND password = :password and status = 'active'";
             $stmt = $db->prepare($query);
             $stmt->bindparam(":email", $email);
             $stmt->bindparam(":password", $password);

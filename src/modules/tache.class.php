@@ -33,13 +33,13 @@ class tache{
     
     static function get_taches($conn){
         try {
-            $query = "SELECT t.title, t.description, t.status, t.date, t.tag, c.name, 
+            $query = "SELECT t.id,t.title, t.description, t.status, t.date, t.tag, c.name, 
                      m.fullname, p.title as projet_name
               FROM tache t 
               INNER JOIN projet p ON t.projet_id = p.id 
               INNER JOIN category c ON t.category_id = c.category_id 
               INNER JOIN member m ON t.member_id = m.member_id 
-              WHERE t.status = 'A_FAIRE'";
+              WHERE t.status = 'A_FAIRE' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
           
             $stmt = $conn->prepare($query);
             $stmt->execute();
@@ -59,7 +59,7 @@ class tache{
               FROM tache t 
               INNER JOIN projet p ON t.projet_id = p.id 
               INNER JOIN category c ON t.category_id = c.category_id
-              WHERE t.status = 'A_FAIRE' and t.member_id = $id";
+              WHERE t.status = 'A_FAIRE' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
           
             $stmt = $conn->prepare($query);
             $stmt->execute();
@@ -76,7 +76,7 @@ class tache{
               FROM tache t 
               INNER JOIN projet p ON t.projet_id = p.id 
               INNER JOIN category c ON t.category_id = c.category_id
-              WHERE t.status = 'EN_COURS' and t.member_id = $id";
+              WHERE t.status = 'EN_COURS' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -92,7 +92,8 @@ class tache{
               FROM tache t 
               INNER JOIN projet p ON t.projet_id = p.id 
               INNER JOIN category c ON t.category_id = c.category_id
-              WHERE t.status = 'TERMINER' and t.member_id = $id";
+              WHERE t.status = 'TERMINER' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
+
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

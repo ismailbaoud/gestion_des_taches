@@ -17,7 +17,9 @@ CREATE TABLE CTO (
     cto_id INT PRIMARY KEY AUTO_INCREMENT,
     fullname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    status ENUM("active", "deactivate") default 'active'
+
 );
 
 
@@ -27,8 +29,9 @@ CREATE TABLE projet (
     title VARCHAR(255) NOT NULL,
     description VARCHAR(5000),
     cto_id INT,
-    status ENUM('ACTIVE','TERMINER') default 'ACTIVE',
+    status ENUM('ACTIVE','TERMINER',) default 'ACTIVE',
     visibility ENUM('private', 'public'),
+    status ENUM('ACTIVE','TERMINER', 'DEACTIVE') default 'ACTIVE',
     FOREIGN KEY (cto_id) REFERENCES CTO(cto_id)
 ) ENGINE=InnoDB;
 
@@ -38,6 +41,7 @@ CREATE TABLE member (
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     cto_id int not null,
+    status ENUM("active", "deactivate") default 'active',
     FOREIGN KEY (cto_id) REFERENCES CTO(cto_id)
 ) ENGINE=InnoDB;
 
@@ -61,6 +65,7 @@ CREATE TABLE tache (
     member_id INT,
     category_id INT,
     projet_id INT,
+    deleted ENUM('active', 'deactive') default 'active',
     FOREIGN KEY (member_id) REFERENCES member(member_id),
     FOREIGN KEY (category_id) REFERENCES category(category_id),
     FOREIGN KEY (projet_id) REFERENCES projet(id)
