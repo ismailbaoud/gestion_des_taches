@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "config/connectiondb.class.php";
+include_once "helpers/debug.php";
 require_once "src/controullers/signup.php";
 include_once "src/modules/admin.php";
 include_once "src/modules/category.php";
