@@ -1,15 +1,21 @@
 <?php
 error_reporting(E_ALL);
-ini_set('display_errors',1);
+ini_set('display_errors', 1);
 
-if($_SESSION["role"] !== "CTO"){
+if ($_SESSION["role"] !== "CTO") {
     header('location: error/404.php ');
 }
-$CSRF = generateCsrfToken()
+
+if (!empty($_SESSION["login_success"])) {
+    $secces = $_SESSION["login_success"];
+}
+
+$CSRF = generateCsrfToken();
 
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +23,8 @@ $CSRF = generateCsrfToken()
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -62,7 +70,23 @@ $CSRF = generateCsrfToken()
     <script src="/public/assets/js/theme.js"></script>
     <script src="/public/assets/js/cto.js"></script>
 </head>
+
 <body class="bg-gray-50 dark:bg-dark-bg min-h-screen transition-colors duration-200">
+    <script>
+        <?php if (!empty($secces)): ?>
+            Swal.fire({
+                title: 'success!',
+                text: '<?php echo $secces; ?>',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600'
+                }
+            });
+        <?php endif;
+        unset($_SESSION["login_success"]);
+        ?>
+    </script>
     <!-- Navigation Bar -->
     <nav class="bg-white dark:bg-dark-card shadow-lg">
         <div class="max-w-6xl mx-auto px-4">
@@ -72,26 +96,36 @@ $CSRF = generateCsrfToken()
                 </div>
                 <div class="flex items-center space-x-4">
                     <!-- Dark Mode Toggle -->
-                    <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                    <button id="theme-toggle" type="button"
+                        class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                         <!-- Dark SVG Icon -->
-                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                         </svg>
                         <!-- Light SVG Icon -->
-                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z">
+                            </path>
                         </svg>
                     </button>
                     <div class="flex items-center space-x-4">
                         <!-- Dark Mode Toggle -->
-                        <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                        <button id="theme-toggle" type="button"
+                            class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                             <!-- Dark SVG Icon -->
-                            <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor"
+                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                             </svg>
                             <!-- Light SVG Icon -->
-                            <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                            <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor"
+                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z">
+                                </path>
                             </svg>
                         </button>
                         <div class="flex space-x-4">
@@ -110,77 +144,88 @@ $CSRF = generateCsrfToken()
     <!-- Main Content -->
     <div class="max-w-6xl mx-auto px-4 py-8">
         <!-- Projects Section -->
-    
+
         <div id="projects-section" class="tab-content">
-        <h1 class="text-4xl font-bold text-center mb-8">Welcome,<?=$_SESSION["fullname"]?></h1>
+            <h1 class="text-4xl font-bold text-center mb-8">Welcome,<?= $_SESSION["fullname"] ?></h1>
 
 
             <div class="flex justify-end mb-6">
-                <button onclick="showModal('createProject')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                <button onclick="showModal('createProject')"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                     Create New Project
                 </button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Sample Project Cards -->
-                <?php 
-                      $project = new _projet();
-                      $projets = $project->display_project($_SESSION["cto_id"]);
-                      if($projets == null){ $projets = [];}
-                      foreach ($projets as $projet) : 
-                  ?>
-                <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2"><?=$projet["title"]?></h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4"><?=$projet["description"]?></p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-500 dark:text-gray-400"><?=$projet["status"]?></span>
-                        <span class="text-sm text-gray-500 dark:text-gray-400"><?=$projet["visibility"]?></span>
-                    </div>
-                    <div class="mt-4 flex justify-end space-x-2">
-                        <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit</button>
-                        <form action="/delete_by_CTO" method="POST">
-                    <input type="text" name="projet_id" value="<?=$projet["id"]?>" class="hidden" required>
+                <?php
+                $project = new _projet();
+                $projets = $project->display_project($_SESSION["cto_id"]);
+                if ($projets == null) {
+                    $projets = [];
+                }
+                foreach ($projets as $projet):
+                    ?>
+                    <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-2"><?= $projet["title"] ?></h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4"><?= $projet["description"] ?></p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500 dark:text-gray-400"><?= $projet["status"] ?></span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400"><?= $projet["visibility"] ?></span>
+                        </div>
+                        <div class="mt-4 flex justify-end space-x-2">
+                            <button
+                                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit</button>
+                            <form action="/delete_by_CTO" method="POST">
+                                <input type="text" name="projet_id" value="<?= $projet["id"] ?>" class="hidden" required>
 
-                    <button name="deactive_projet"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
-                    </form>                     </div>
-                </div>
-                <?php endforeach?>
+                                <button name="deactive_projet"
+                                    class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endforeach ?>
             </div>
         </div>
-       
+
 
         <!-- Team Section -->
         <div id="team-section" class="tab-content hidden">
             <h1 class="text-4xl font-bold text-center mb-8">Team Management</h1>
             <div class="flex justify-end mb-6">
-                <button onclick="showModal('addMember')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                <button onclick="showModal('addMember')"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                     Add Team Member
                 </button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Sample Team Member Card -->
-            <?php
-                            $res = new equipe_handling();
-                            $members = $res->_display($_SESSION["cto_id"]);
-                            foreach ($members as $member): ?>
-                <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                            MR
+                <?php
+                $res = new equipe_handling();
+                $members = $res->_display($_SESSION["cto_id"]);
+                foreach ($members as $member): ?>
+                    <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                                MR
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-semibold"><?= $member["fullname"] ?></h3>
+
+                            </div>
                         </div>
-                        <div class="ml-4">
-                            <h3 class="text-xl font-semibold"><?=$member["fullname"]?></h3>
-                            
+                        <p class="text-gray-600 dark:text-gray-300 mb-4"><?= $member["email"] ?></p>
+                        <div class="flex justify-end space-x-2">
+                            <form action="/delete_by_CTO" method="POST">
+                                <input type="text" name="member_id" value="<?= $member["member_id"] ?>" class="hidden"
+                                    required>
+
+                                <button name="deactive_member"
+                                    class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                            </form>
                         </div>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4"><?=$member["email"]?></p>
-                    <div class="flex justify-end space-x-2">
-                        <form action="/delete_by_CTO" method="POST">
-                    <input type="text" name="member_id" value="<?=$member["member_id"]?>" class="hidden" required>
-
-                    <button name="deactive_member"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
-                    </form>                     </div>
-                </div>
-                <?php endforeach;?>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -188,7 +233,8 @@ $CSRF = generateCsrfToken()
         <div id="assign-tasks-section" class="tab-content hidden">
             <h1 class="text-4xl font-bold text-center mb-8">Task Assignment</h1>
             <div class="flex justify-end mb-6">
-                <button onclick="showModal('assignTask')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                <button onclick="showModal('assignTask')"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                     Assign New Task
                 </button>
             </div>
@@ -206,31 +252,38 @@ $CSRF = generateCsrfToken()
                                     <th class="text-left py-3 px-4">Status</th>
                                     <th class="text-left py-3 px-4">Actions</th>
                                 </tr>
-                                <?php 
-                            $res = new _tache();
+                                <?php
+                                $res = new _tache();
 
-                            $taches = $res->display_taches();
-                 
-                      if($taches == null){ $taches = [];}
+                                $taches = $res->display_taches();
 
-                            foreach ($taches as $tache) :
-                            ?>
-                                <tr class="border-b dark:border-gray-700">
-                                    <td class="text-left py-3 px-4"><?=$tache["title"]?></td>
-                                    <td class="text-left py-3 px-4"><?=$tache["projet_name"]?></td>
-                                    <td class="text-left py-3 px-4"><?=$tache["fullname"]?></td>
-                                    <td class="text-left py-3 px-4"><?=$tache["date"]?></td>
-                                    <td class="text-left py-3 px-4"><?=$tache["status"]?></td>
-                                    <td class="text-left py-3 px-4">
-                        <button class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit | </button>
-                        <form action="/delete_by_CTO" method="POST">
-                    <input type="text" name="tache_id" value="<?=$tache["id"]?>" class="hidden" required>
+                                if ($taches == null) {
+                                    $taches = [];
+                                }
 
-                    <button name="deactive_tache"  class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
-                    </form>                     </td>
+                                foreach ($taches as $tache):
+                                    ?>
+                                    <tr class="border-b dark:border-gray-700">
+                                        <td class="text-left py-3 px-4"><?= $tache["title"] ?></td>
+                                        <td class="text-left py-3 px-4"><?= $tache["projet_name"] ?></td>
+                                        <td class="text-left py-3 px-4"><?= $tache["fullname"] ?></td>
+                                        <td class="text-left py-3 px-4"><?= $tache["date"] ?></td>
+                                        <td class="text-left py-3 px-4"><?= $tache["status"] ?></td>
+                                        <td class="text-left py-3 px-4">
+                                            <button
+                                                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">Edit
+                                                | </button>
+                                            <form action="/delete_by_CTO" method="POST">
+                                                <input type="text" name="tache_id" value="<?= $tache["id"] ?>"
+                                                    class="hidden" required>
+
+                                                <button name="deactive_tache"
+                                                    class="text-red-600 dark:text-red-500 hover:text-red-800">Deactivate</button>
+                                            </form>
+                                        </td>
 
 
-                                </tr>
+                                    </tr>
                                 <?php endforeach; ?>
                             </thead>
                         </table>
@@ -243,24 +296,27 @@ $CSRF = generateCsrfToken()
         <div id="categories-section" class="tab-content hidden">
             <h1 class="text-4xl font-bold text-center mb-8">Categories Management</h1>
             <div class="flex justify-end mb-6">
-                <button onclick="showModal('createCategory')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                <button onclick="showModal('createCategory')"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                     Create Category
                 </button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Sample Category Card -->
-                 <?php 
-                      
-                            $categories = category_handling::display($_SESSION["cto_id"]);
-                      if($projets == null){ $projets = [];}
+                <?php
 
-                            foreach ($categories as $category) :
-                        ?>
-                <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2"><?= $category["name"] ?></h3>
-                    <div class="flex justify-between items-center">
+                $categories = category_handling::display($_SESSION["cto_id"]);
+                if ($projets == null) {
+                    $projets = [];
+                }
+
+                foreach ($categories as $category):
+                    ?>
+                    <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-2"><?= $category["name"] ?></h3>
+                        <div class="flex justify-between items-center">
+                        </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
 
             </div>
@@ -269,7 +325,8 @@ $CSRF = generateCsrfToken()
 
     <!-- Modals -->
     <!-- Create Project Modal -->
-    <div id="createProjectModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div id="createProjectModal"
+        class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Create New Project</h3>
             <form action="/projet_create" method="post" id="createProjectForm" class="space-y-4">
@@ -293,7 +350,7 @@ $CSRF = generateCsrfToken()
 
                     </select>
                 </div>
-                <input type="hidden" name="csrf_token" value="<?=$CSRF?>">
+                <input type="hidden" name="csrf_token" value="<?= $CSRF ?>">
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="hideModal('createProject')"
                         class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
@@ -315,26 +372,26 @@ $CSRF = generateCsrfToken()
             <form action="/manage_equipe" method="post" id="addMemberForm" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="memberRole">Select Member</label>
-              
+
                     <select id="memberRole" name="role" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Select a role</option>
-                        <?php 
+                        <?php
                         try {
                             $res = new equipe_handling();
                             $members = $res->display($_SESSION["cto_id"]);
                             foreach ($members as $member) {
-                                
-                                echo '<option value="' . htmlspecialchars($member['member_id']) . '">' . 
-                                     htmlspecialchars($member['fullname']) . 
-                                     '</option>';
+
+                                echo '<option value="' . htmlspecialchars($member['member_id']) . '">' .
+                                    htmlspecialchars($member['fullname']) .
+                                    '</option>';
                             }
                         } catch (Exception $e) {
                             error_log("Error loading categories: " . $e->getMessage());
                         }
                         ?>
                     </select>
-                    
+
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="hideModal('addMember')"
@@ -351,10 +408,12 @@ $CSRF = generateCsrfToken()
     </div>
 
     <!-- Assign Task Modal -->
-    <div id="assignTaskModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div id="assignTaskModal"
+        class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Assign New Task</h3>
-            <form action="/tache" method="post" id="assignTaskForm" class="space-y-4" method="post" action="/api/tasks/assign">
+            <form action="/tache" method="post" id="assignTaskForm" class="space-y-4" method="post"
+                action="/api/tasks/assign">
                 <div>
                     <label class="block text-sm font-medium mb-1" for="taskTitle">Task Title</label>
                     <input type="text" id="taskTitle" name="title" required
@@ -370,11 +429,13 @@ $CSRF = generateCsrfToken()
                     <select id="taskProject" name="projet_id" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                         <option name="">Select a project</option>
-                        <?php 
-                      $project = new _projet();
-                      $projets = $project->display_project($_SESSION["cto_id"]);
-                      if($projets == null){ $projets = [];}
-                      foreach ($projets as $projet) :?>
+                        <?php
+                        $project = new _projet();
+                        $projets = $project->display_project($_SESSION["cto_id"]);
+                        if ($projets == null) {
+                            $projets = [];
+                        }
+                        foreach ($projets as $projet): ?>
                             <option value="<?= htmlspecialchars($projet['id']) ?>">
                                 <?= htmlspecialchars($projet['title']) ?>
                             </option>
@@ -386,17 +447,19 @@ $CSRF = generateCsrfToken()
                     <select id="taskAssignee" name="member_id" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Select member</option>
-                        <?php 
+                        <?php
                         try {
                             $res = new equipe_handling();
                             $members = $res->_display($_SESSION["cto_id"]);
-                      if($members == null){ $members = [];}
+                            if ($members == null) {
+                                $members = [];
+                            }
 
                             foreach ($members as $member) {
-                                
-                                echo '<option value="' . htmlspecialchars($member['member_id']) . '">' . 
-                                     htmlspecialchars($member['fullname']) . 
-                                     '</option>';
+
+                                echo '<option value="' . htmlspecialchars($member['member_id']) . '">' .
+                                    htmlspecialchars($member['fullname']) .
+                                    '</option>';
                             }
                         } catch (Exception $e) {
                             error_log("Error loading categories: " . $e->getMessage());
@@ -419,13 +482,13 @@ $CSRF = generateCsrfToken()
                     <select id="projectCategory" name="category_id" required
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                         <option value="">Select a category</option>
-                        <?php 
+                        <?php
                         try {
                             $categories = category_handling::display($_SESSION["cto_id"]);
                             foreach ($categories as $category) {
-                                echo '<option value="' . htmlspecialchars($category['category_id']) . '">' . 
-                                     htmlspecialchars($category['name']) . 
-                                     '</option>';
+                                echo '<option value="' . htmlspecialchars($category['category_id']) . '">' .
+                                    htmlspecialchars($category['name']) .
+                                    '</option>';
                             }
                         } catch (Exception $e) {
                             error_log("Error loading categories: " . $e->getMessage());
@@ -455,21 +518,29 @@ $CSRF = generateCsrfToken()
     </div>
 
     <!-- Create Category Modal -->
-    <div id="createCategoryModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div id="createCategoryModal"
+        class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Create New Category</h3>
             <form action="/category" method="post" id="createCategoryForm" class="space-y-4">
-                <div>
+                <div id="fields-container">
                     <label class="block text-sm font-medium mb-1" for="categoryName">Category Name</label>
-                    <input type="text" id="categoryName" name="name" required
-                        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                    <input type="text" id="categoryName" placeholder="Entrez une catégorie" name="dynamic_fields[]"
+                        required
+                        class="w-full p-2 border rounded-lg focus:ring-2 mb-3 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
                 </div>
+
                 <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="addField()"
+                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                        Add Field
+                    </button>
                     <button type="button" onclick="hideModal('createCategory')"
                         class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100">
                         Cancel
                     </button>
-                    <button type="submit" name="btn_category" value="category" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    <button type="submit" name="btn_category" value="category"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                         Create Category
                     </button>
                 </div>
@@ -483,7 +554,7 @@ $CSRF = generateCsrfToken()
         // Initialize drag and drop
         document.addEventListener('DOMContentLoaded', () => {
             const containers = document.querySelectorAll('.kanban-column');
-            
+
             if (typeof Draggable !== 'undefined') {
                 const sortable = new Draggable.Sortable(containers, {
                     draggable: '.task-card',
@@ -504,7 +575,7 @@ $CSRF = generateCsrfToken()
                 sortable.on('sortable:stop', (evt) => {
                     const task = evt.data.dragEvent.data.source;
                     const newStatus = evt.data.newContainer.dataset.status;
-                    
+
                     // Update task styling based on new status
                     updateTaskStyle(task, newStatus);
                 });
@@ -539,7 +610,7 @@ $CSRF = generateCsrfToken()
                 tab.classList.add('hidden');
             });
             document.getElementById(tabName + '-section').classList.remove('hidden');
-            
+
             // Update active tab styling
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
@@ -547,7 +618,35 @@ $CSRF = generateCsrfToken()
             event.target.classList.add('active');
         }
 
-        // ... rest of your existing JavaScript ...
+        // ... la formulaire dinamique ...
+        function addField() {
+            const container = document.getElementById("fields-container");
+
+            // Créer un nouveau champ input
+            const newField = document.createElement("input");
+            newField.type = "text";
+            newField.name = "dynamic_fields[]"; // Utilisation d'un tableau pour plusieurs champs
+            newField.placeholder = "Entrez une catégorie";
+            newField.required = true; // Rendre le champ obligatoire
+            newField.classList.add("w-full", "p-2", "mb-3", "border", "rounded-lg", "focus:ring-2", "focus:ring-blue-500",
+                "dark:bg-gray-700", "dark:border-gray-600");
+
+            // Ajouter le champ au conteneur
+            container.appendChild(newField);
+
+            // Ajouter un saut de ligne pour la lisibilité
+            container.appendChild(document.createElement("br"));
+
+
+            // Fonction pour cacher un modal (optionnel)
+            function hideModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        }
     </script>
 </body>
+
 </html>

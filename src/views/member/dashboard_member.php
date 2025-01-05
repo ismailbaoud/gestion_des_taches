@@ -1,19 +1,26 @@
 <?php
-if($_SESSION["role"] !== "member"){
+if ($_SESSION["role"] !== "member") {
     header('location: error/404.php ');
+}
+if (!empty($_SESSION["login_success"])) {
+    $secces = $_SESSION["login_success"];
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProjectHub - Member Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Drag and Drop library -->
     <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -31,7 +38,23 @@ if($_SESSION["role"] !== "member"){
         }
     </script>
 </head>
+
 <body class="bg-gray-50 dark:bg-dark-bg transition-colors duration-200">
+    <script>
+        <?php if (!empty($secces)): ?>
+            Swal.fire({
+                title: 'success!',
+                text: '<?php echo $secces; ?>',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600'
+                }
+            });
+        <?php endif;
+        unset($_SESSION["login_success"]);
+        ?>
+    </script>
     <!-- Navigation Bar -->
     <nav class="bg-white dark:bg-dark-card shadow-lg">
         <div class="max-w-6xl mx-auto px-4">
@@ -41,14 +64,19 @@ if($_SESSION["role"] !== "member"){
                 </div>
                 <div class="flex items-center space-x-4">
                     <!-- Dark Mode Toggle -->
-                    <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <button id="darkModeToggle"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         <!-- Sun Icon -->
-                        <svg class="w-6 h-6 hidden dark:block text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        <svg class="w-6 h-6 hidden dark:block text-gray-200" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                         <!-- Moon Icon -->
-                        <svg class="w-6 h-6 block dark:hidden text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        <svg class="w-6 h-6 block dark:hidden text-gray-700" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
                     </button>
                     <div class="flex space-x-4">
@@ -61,11 +89,14 @@ if($_SESSION["role"] !== "member"){
         </div>
     </nav>
 
+
+
     <!-- Main Content -->
     <div class="max-w-6xl mx-auto px-4 py-8">
         <!-- Welcome Section -->
         <div class="mb-8">
-            <h1 class="text-4xl font-bold text-center mb-4">Welcome Back, <span class="text-blue-600"><?=$_SESSION["fullname"]?></span></h1>
+            <h1 class="text-4xl font-bold text-center mb-4">Welcome Back, <span
+                    class="text-blue-600"><?= $_SESSION["fullname"] ?></span></h1>
             <p class="text-center text-gray-600 dark:text-gray-300">Here are your assigned tasks</p>
         </div>
 
@@ -73,15 +104,15 @@ if($_SESSION["role"] !== "member"){
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Todo</h3>
-                <p class="text-3xl font-bold text-blue-600"><?=$todo_count?></p>
+                <p class="text-3xl font-bold text-blue-600"><?= $todo_count ?></p>
             </div>
             <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">In Progress</h3>
-                <p class="text-3xl font-bold text-green-600"><?=$doing_count?></p>
+                <p class="text-3xl font-bold text-green-600"><?= $doing_count ?></p>
             </div>
             <div class="bg-white dark:bg-dark-card rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-300 mb-2">Completed</h3>
-                <p class="text-3xl font-bold text-purple-600"><?=$done_count?></p>
+                <p class="text-3xl font-bold text-purple-600"><?= $done_count ?></p>
             </div>
         </div>
 
@@ -93,24 +124,27 @@ if($_SESSION["role"] !== "member"){
                     <h2 class="text-lg font-semibold mb-4">Todo</h2>
                     <div class="kanban-column" data-status="todo">
                         <!-- Task Card -->
-                        <?php 
-                            $res = new tache_member();
-                            $taches = $res->display_todo_taches($_SESSION["member_id"]);
-                      if($taches == null){ $tache = [];}
+                        <?php
+                        $res = new tache_member();
+                        $taches = $res->display_todo_taches($_SESSION["member_id"]);
+                        if ($taches == null) {
+                            $taches = [];
+                        }
 
-                            foreach ($taches as $tache) :
+                        foreach ($taches as $tache):
                             ?>
-                        <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
-                            <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold"><?=$tache["title"] ?></h3>
-                                <span class="text-sm text-blue-600 dark:text-blue-400"><?=$tache["tag"]?></span>
+                            <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-semibold"><?= $tache["title"] ?></h3>
+                                    <span class="text-sm text-blue-600 dark:text-blue-400"><?= $tache["tag"] ?></span>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-3"><?= $tache["description"] ?></p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500 dark:text-gray-400"><?= $tache["date"] ?></span>
+                                    <span
+                                        class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?= $tache["name"] ?></span>
+                                </div>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 mb-3"><?=$tache["description"]?></p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500 dark:text-gray-400"><?=$tache["date"]?></span>
-                                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?=$tache["name"]?></span>
-                            </div>
-                        </div>
                         <?php endforeach; ?>
                         <!-- More todo tasks here -->
                     </div>
@@ -123,25 +157,27 @@ if($_SESSION["role"] !== "member"){
                     <h2 class="text-lg font-semibold mb-4">In Progress</h2>
                     <div class="kanban-column" data-status="in-progress">
                         <!-- Task Card -->
-                        <?php 
-                            $res = new tache_member();
-                            $taches = $res->display_doing_taches($_SESSION["member_id"]);
-                            if($taches == null){ $taches = [];
-                            }
+                        <?php
+                        $res = new tache_member();
+                        $taches = $res->display_doing_taches($_SESSION["member_id"]);
+                        if ($taches == null) {
+                            $taches = [];
+                        }
 
-                            foreach ($taches as $tache) :
+                        foreach ($taches as $tache):
                             ?>
-                        <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
-                            <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold"><?=$tache["title"] ?></h3>
-                                <span class="text-sm text-blue-600 dark:text-blue-400"><?=$tache["tag"]?></span>
+                            <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-semibold"><?= $tache["title"] ?></h3>
+                                    <span class="text-sm text-blue-600 dark:text-blue-400"><?= $tache["tag"] ?></span>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-3"><?= $tache["description"] ?></p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500 dark:text-gray-400"><?= $tache["date"] ?></span>
+                                    <span
+                                        class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?= $tache["name"] ?></span>
+                                </div>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 mb-3"><?=$tache["description"]?></p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500 dark:text-gray-400"><?=$tache["date"]?></span>
-                                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?=$tache["name"]?></span>
-                            </div>
-                        </div>
                         <?php endforeach; ?>
 
                         <!-- More in-progress tasks here -->
@@ -155,24 +191,27 @@ if($_SESSION["role"] !== "member"){
                     <h2 class="text-lg font-semibold mb-4">Completed</h2>
                     <div class="kanban-column" data-status="completed">
                         <!-- Task Card -->
-                        <?php 
-                            $res = new tache_member();
-                            $taches = $res->display_done_taches($_SESSION["member_id"]);
-                      if($taches == null){ $tache = [];}
+                        <?php
+                        $res = new tache_member();
+                        $taches = $res->display_done_taches($_SESSION["member_id"]);
+                        if ($taches == null) {
+                            $taches = [];
+                        }
 
-                            foreach ($taches as $tache) :
+                        foreach ($taches as $tache):
                             ?>
-                        <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
-                            <div class="flex justify-between items-start mb-3">
-                                <h3 class="text-lg font-semibold"><?=$tache["title"] ?></h3>
-                                <span class="text-sm text-blue-600 dark:text-blue-400"><?=$tache["tag"]?></span>
+                            <div class="task-card bg-white dark:bg-dark-card rounded-lg shadow-md p-4 mb-4 cursor-move">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h3 class="text-lg font-semibold"><?= $tache["title"] ?></h3>
+                                    <span class="text-sm text-blue-600 dark:text-blue-400"><?= $tache["tag"] ?></span>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-3"><?= $tache["description"] ?></p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500 dark:text-gray-400"><?= $tache["date"] ?></span>
+                                    <span
+                                        class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?= $tache["name"] ?></span>
+                                </div>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-300 mb-3"><?=$tache["description"]?></p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500 dark:text-gray-400"><?=$tache["date"]?></span>
-                                <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded text-sm"><?=$tache["name"]?></span>
-                            </div>
-                        </div>
                         <?php endforeach; ?>
 
                         <!-- More completed tasks here -->
@@ -187,9 +226,11 @@ if($_SESSION["role"] !== "member"){
         <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md">
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-xl font-bold">Task Details</h3>
-                <button onclick="hideTaskModal()" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                <button onclick="hideTaskModal()"
+                    class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
                     </svg>
                 </button>
             </div>
@@ -204,7 +245,8 @@ if($_SESSION["role"] !== "member"){
                 </div>
                 <div>
                     <label class="block text-gray-700 dark:text-gray-300 mb-2">Description</label>
-                    <p id="taskDescription" class="text-gray-600 dark:text-gray-300">Implement new user interface components</p>
+                    <p id="taskDescription" class="text-gray-600 dark:text-gray-300">Implement new user interface
+                        components</p>
                 </div>
                 <div>
                     <label class="block text-gray-700 dark:text-gray-300 mb-2">Due Date</label>
@@ -212,16 +254,19 @@ if($_SESSION["role"] !== "member"){
                 </div>
                 <form method="post" action="">
                     <label class="block text-gray-700 dark:text-gray-300 mb-2">Status</label>
-                    <select id="taskStatus" name="taskStatus" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg">
+                    <select id="taskStatus" name="taskStatus"
+                        class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg">
                         <option value="todo">Todo</option>
                         <option value="in-progress">In Progress</option>
                         <option value="completed">Completed</option>
                     </select>
-                    <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg">Update Status</button>
+                    <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg">Update
+                        Status</button>
                 </form>
             </div>
             <div class="mt-6 flex justify-end">
-                <button onclick="hideTaskModal()" class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600">
+                <button onclick="hideTaskModal()"
+                    class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600">
                     Save Changes
                 </button>
             </div>
@@ -229,136 +274,121 @@ if($_SESSION["role"] !== "member"){
     </div>
 
     <!-- Profile Modal -->
-    <div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-start mb-6">
-                <h3 class="text-xl font-bold">My Profile</h3>
-                <button onclick="hideProfileModal()" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="overflow-y-auto flex-1 custom-scrollbar">
-                <!-- Profile Picture -->
-                <div class="flex justify-center mb-6">
-                    <div class="relative">
-                        <div class="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
-                            JD
-                        </div>
-                        <button class="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                            </svg>
-                        </button>
-                    </div>
+    <?php
+    $res = new info_member();
+    $members = $res->get_memberinfo($_SESSION["member_id"]);
+
+    // Handle case where no members are found
+    if ($members == null) {
+        $members = [];
+    }
+
+    // Loop through each member and process the image
+    foreach ($members as $tache):
+        // Assuming 'image' is the field name containing the binary image data
+        $imageData = base64_encode($tache['image']);
+        $imageSrc = "data:image/jpeg;base64,{$imageData}";
+        ?>
+        <div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-dark-card rounded-lg p-6 w-full max-w-md max-h-[90vh] flex flex-col">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-xl font-bold">My Profile</h3>
                 </div>
 
-                <!-- Profile Information -->
-                <form class="space-y-4">
-                    <div>
-                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Full name</label>
-                        <input type="text" value="<?=$_SESSION["fullname"]?>" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                        <input type="email" value="<?=$_SESSION["email"]?>" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Role</label>
-                        <input type="text" value="<?=$_SESSION["role"]?>" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg" readonly>
-                    </div>
-                    <!-- Statistics -->
-                    <div class="grid grid-cols-2 gap-4 mt-6">
-                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-center">
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Total Tasks</p>
-                            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">20</p>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-center">
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Completed</p>
-                            <p class="text-2xl font-bold text-green-600 dark:text-green-300">12</p>
+                <div class="overflow-y-auto flex-1 custom-scrollbar">
+                    <!-- Profile Picture -->
+                    <div class="flex justify-center mb-6">
+                        <div class="relative">
+                            <div>
+                                <img src="<?= $imageSrc ?>" class="rounded-full" alt="Member Image" />
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Change Password Section -->
-                    <div class="mt-6">
-                        <button type="button" onclick="togglePasswordSection()" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-500 font-medium flex items-center">
-                            <span>Change Password</span>
-                            <svg id="passwordArrow" class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div id="passwordSection" class="hidden mt-4 space-y-4 transition-all duration-300">
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 mb-2">Current Password</label>
-                                <input type="password" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 mb-2">New Password</label>
-                                <input type="password" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 dark:text-gray-300 mb-2">Confirm New Password</label>
-                                <input type="password" class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                    <!-- Profile Information -->
+                    <form class="space-y-4">
 
-            <div class="flex justify-end space-x-2 mt-6 pt-4 border-t">
-                <button type="button" onclick="hideProfileModal()" class="px-4 py-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <div>
+                            <label class="block text-gray-700 dark:text-gray-300 mb-2">Full name</label>
+                            <input type="text" value="<?= $_SESSION["fullname"] ?>"
+                                class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg"
+                                readonly>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                            <input type="email" value="<?= $_SESSION["email"] ?>"
+                                class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg"
+                                readonly>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 dark:text-gray-300 mb-2">Role</label>
+                            <input type="text" value="<?= $_SESSION["role"] ?>"
+                                class="w-full p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg"
+                                readonly>
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <div class="flex justify-end space-x-2 mt-6 pt-4 border-t">
+                    <button type="button" onclick="hideProfileModal()"
+                    class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600">
                     Close
-                </button>
-                <button type="submit" class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600">
-                    Save Changes
-                </button>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-
+    <?php endforeach ?>
     <style>
         .nav-link {
-            @apply text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+            @apply text-gray-600 dark: text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors;
         }
+
         .nav-link.active {
-            @apply text-blue-600 dark:text-blue-400;
+            @apply text-blue-600 dark: text-blue-400;
         }
+
         /* Dark mode styles */
         .dark .bg-white {
             @apply bg-dark-card text-gray-100;
         }
+
         .dark .text-gray-600 {
             @apply text-gray-300;
         }
+
         .dark .text-gray-500 {
             @apply text-gray-400;
         }
+
         .dark .border {
             @apply border-gray-600;
         }
+
         .dark .hover\:bg-gray-50:hover {
-            @apply hover:bg-gray-700;
+            @apply hover: bg-gray-700;
         }
+
         .kanban-column {
-            min-height: 200px; /* Ensure columns have height even when empty */
+            min-height: 200px;
+            /* Ensure columns have height even when empty */
             transition: background-color 0.2s ease;
         }
-        
+
         .kanban-column.draggable-container--is-dragging {
             background-color: rgba(0, 0, 0, 0.05);
         }
-        
+
         .task-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        
+
         .task-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        
+
         .task-card.draggable--is-dragging {
             transform: scale(1.05);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -368,9 +398,9 @@ if($_SESSION["role"] !== "member"){
     <script>
         // Dark mode functionality
         const darkModeToggle = document.getElementById('darkModeToggle');
-        
+
         // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'true' || 
+        if (localStorage.getItem('darkMode') === 'true' ||
             (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
@@ -383,7 +413,7 @@ if($_SESSION["role"] !== "member"){
 
         document.addEventListener('DOMContentLoaded', () => {
             const containers = document.querySelectorAll('.kanban-column');
-            
+
             if (typeof Draggable !== 'undefined') {
                 const sortable = new Draggable.Sortable(containers, {
                     draggable: '.task-card',
@@ -404,13 +434,13 @@ if($_SESSION["role"] !== "member"){
                 sortable.on('sortable:stop', (evt) => {
                     const task = evt.data.dragEvent.data.source;
                     const newStatus = evt.data.newContainer.dataset.status;
-                    
+
                     // Update task styling based on new status
                     updateTaskStyle(task, newStatus);
                 });
             }
         });
-œ
+        œ
         // Update task card styling based on status
         function updateTaskStyle(taskElement, status) {
             const statusBadge = taskElement.querySelector('.status-badge');
@@ -465,7 +495,7 @@ if($_SESSION["role"] !== "member"){
         window.addEventListener('click', (e) => {
             const profileModal = document.getElementById('profileModal');
             const taskDetailModal = document.getElementById('taskDetailModal');
-            
+
             if (e.target === profileModal) {
                 hideProfileModal();
             }
@@ -480,6 +510,62 @@ if($_SESSION["role"] !== "member"){
                 e.stopPropagation();
             });
         });
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+        let draggedTaskId = null;
+
+function onDragStart(event) {
+  draggedTaskId = event.target.id;
+}
+
+function onDrop(event) {
+  event.preventDefault();
+  
+  const droppedOnTaskId = event.target.id;
+  
+  // Update the task order in the frontend
+  const draggedTask = document.getElementById(draggedTaskId);
+  const droppedTask = document.getElementById(droppedOnTaskId);
+  
+  // Swap the tasks visually or reorder them in the list
+  droppedTask.parentNode.insertBefore(draggedTask, droppedTask.nextSibling);
+
+  // Now send the update to the backend to change the task's status
+  const newStatus = getNewStatus(droppedTaskId); // Logic to get the new status for task
+  
+  updateTaskStatusInDatabase(draggedTaskId, newStatus);
+}
+
+function onDragOver(event) {
+  event.preventDefault();
+}
+
+function getNewStatus(taskId) {
+  // You can define your own logic here to determine the new status
+  // based on the task's new position
+  return 'newStatus';  // Example placeholder
+}
+
+function updateTaskStatusInDatabase(taskId, newStatus) {
+  fetch('/update-task-status', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      taskId: taskId,
+      newStatus: newStatus,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Task status updated:', data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
     </script>
 </body>
+
 </html>

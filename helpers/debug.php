@@ -1,7 +1,8 @@
 <?php
 
 
-function dd(...$var) {
+function dd(...$var)
+{
     foreach ($var as $elem) {
         echo '<pre class="codespan">';
         echo '<code>';

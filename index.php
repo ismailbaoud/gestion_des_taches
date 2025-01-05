@@ -2,7 +2,6 @@
 session_start();
 require_once "config/connectiondb.class.php";
 include_once "helpers/debug.php";
-require_once "src/controullers/signup.php";
 include_once "src/modules/admin.php";
 include_once "src/modules/category.php";
 include_once "src/modules/CTO.class.php";
@@ -11,6 +10,7 @@ include_once "src/modules/member.classe.php";
 include_once "src/modules/projet.classe.php";
 require_once "src/modules/tache.class.php";
 require_once "src/controullers/member/tache.php";
+require_once "src/controullers/member/getinformations.php";
 require_once "src/controullers/member/statistics.php";
 require_once "src/controullers/CTO/projet.php";
 require_once "src/controullers/CTO/category_add.php";

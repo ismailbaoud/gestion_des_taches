@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-class all_projets
+class info_member
 {
 
     private $db;
@@ -13,11 +13,11 @@ class all_projets
         $this->db = $datab->getConnection();
     }
 
-    public function display()
+    public function get_memberinfo($id)
     {
-        $projets = projet::get_all_projects($this->db);
+        $members = member::get_memberinfo($this->db, $id);
 
-        return $projets;
+        return $members;
     }
 }
 ?>

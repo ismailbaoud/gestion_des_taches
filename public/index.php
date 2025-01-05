@@ -2,10 +2,9 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors',1);
-
-if (!empty($_SESSION["infoerr"])) {
-    echo $_SESSION["infoerr"];
-    session_destroy();}
+if(!empty($_SESSION["infoerr"])){
+    $secces = $_SESSION["infoerr"];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light">
@@ -17,21 +16,42 @@ if (!empty($_SESSION["infoerr"])) {
     <script src="public/assets/js/navigation.js"></script>
     <script src="public/assets/js/auth.js"></script>
     <script src="public/assets/js/theme.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
-        // Check dark mode preference
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+    };
+    // Check dark mode preference
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+</script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <script>
+        <?php if (!empty($secces)): ?>
+            Swal.fire({
+                title: 'error!',
+                text: '<?php echo $secces; ?>',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600'
+                }
+            });
+        <?php endif; 
+        session_destroy(); ?>
+    
+       
+    </script>
     <!-- Navigation Bar -->
-    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+    <nav class="bg-white dark:bg-gray-800 shadow-md">
+        <!-- Add your navigation content here -->
+    </nav>
+</body>
+
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
@@ -103,7 +123,7 @@ if (!empty($_SESSION["infoerr"])) {
                 <!-- Sign Up Form -->
                 <div id="signup-form" class="auth-form hidden">
                     <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Sign Up</h2>
-                    <form action="/signup" method="post" class="space-y-4">
+                    <form action="/signup" method="post" class="space-y-4" enctype="multipart/form-data">
                         <div>
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
                             <input type="text" name="username" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
@@ -116,6 +136,10 @@ if (!empty($_SESSION["infoerr"])) {
                             <label class="block text-gray-700 dark:text-gray-300 mb-2">Password</label>
                             <input type="password" name="password" class="w-full p-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" required>
                         </div>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2">Foto Profile</label>
+                        <input type="file" name="image" required>
+                            
+                    
                         <button type="submit" name="btn_signup" value="signUp" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">Sign Up</button>
                     </form>
                     <p class="mt-4 text-center text-gray-700 dark:text-gray-300">

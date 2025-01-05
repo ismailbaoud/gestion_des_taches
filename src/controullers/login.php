@@ -23,7 +23,7 @@ class login{
             $result = [];
             $test = $stmt->fetch(PDO::FETCH_ASSOC);
             if($test){
-            if(!password_verify($password,$test["password"])){
+            if(password_verify($password,$test["password"])){
                 $result = $test;
             }}
          
@@ -45,7 +45,8 @@ class login{
             $test = $stmt->fetch(PDO::FETCH_ASSOC);
             $result = [];
             if($test){
-            if(!password_verify($password,$test["password"])){
+                if(password_verify($password,$test["password"])){
+                
                 $result = $test;
             }}
             if($result) {
@@ -65,7 +66,7 @@ class login{
             $result = [];
             $test = $stmt->fetch(PDO::FETCH_ASSOC);
             if($test){
-            if(!password_verify($password,$test["password"])){
+            if(password_verify($password,$test["password"])){
                 $result = $test;
             }
         }
@@ -78,7 +79,6 @@ class login{
                 
                 return "member";
             }
-
             
             return false;
         } catch(PDOException $e) {
@@ -87,38 +87,57 @@ class login{
         }
     }
 }
-$passregex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/";
+
+
+$emailregex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/";
 $isvalide = true;
-if(isset($_POST["btn_login"])){
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    if(empty($email) || !preg_match($emailregex, $email)){
+
+if (isset($_POST["btn_login"])) {
+    $email = htmlspecialchars(trim($_POST["email"]));
+    $password = trim($_POST["password"]);
+
+    // Validation de l'email
+    if (empty($email) || !preg_match($emailregex, $email)) {
         $isvalide = false;
-        $_SESSION["erremail"]  = "invalide email please entervalide email ";
-    }else{
-        $_SESSION["erremail"] = "valide email";
+        $_SESSION["infoerr"] = "Email invalide. Veuillez entrer un email valide.";
+    } else {
+        $_SESSION["erremail"] = "Email valide.";
+    }
 
-    }if($isvalide){
+    // Validation du mot de passe
+    if (empty($password)) {
+        $isvalide = false;
+        $_SESSION["infoerr"] = "Mot de passe invalide. Veuillez entrer votre mot de passe.";
+    }
 
+    if ($isvalide) {
         $user = new login();
-        $is_a = $user->loginset($email, $password);
-        if($is_a == "admin"){
-            header("location: /admin_dashboard");
-    
+        $is_a = $user->loginset($email, $password); 
+       
+        switch ($is_a) {
+            case "admin":
+                $_SESSION["login_success"] = "Bienvenue sur votre page admin.";
+                header("Location: /admin_dashboard");
+                exit();
+            case "CTO":
+                $_SESSION["login_success"] = "Bienvenue sur votre page CTO.";
+                header("Location: /CTO_dashboard");
+                exit();
+            case "member":
+                $_SESSION["login_success"] = "Bienvenue sur votre page membre.";
+                header("Location: /member_dashboard");
+                exit();
+            default:
+                $_SESSION["infoerr"] = "Identifiants invalides. Veuillez réessayer.";
+                header("Location: /");
+                exit();
         }
-        elseif($is_a == "CTO"){
-            header("location: /CTO_dashboard");
-        }
-        elseif($is_a == "member"){
-            header("location: /member_dashboard");
-        }else{
-            header("location: /");
-            
-        }
-    }else{
-        $_SESSION["infoerr"] = "<script>alert('invalide register ,please enter valide informations agine status : #".$_SESSION["erremail"]."')</script>";
-        header('location: /');
-     }
-
+    } else {
+        $_SESSION["infoerr"] = "Connexion invalide. Veuillez corriger les erreurs : " . $_SESSION["erremail"];
+        header("Location: /");
+        exit();
+    }
 }
+
+
 ?>
