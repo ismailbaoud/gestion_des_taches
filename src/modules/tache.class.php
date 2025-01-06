@@ -64,7 +64,8 @@ class tache
               FROM tache t 
               INNER JOIN projet p ON t.projet_id = p.id 
               INNER JOIN category c ON t.category_id = c.category_id
-              WHERE t.status = 'A_FAIRE' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
+              INNER JOIN member m ON m.member_id = t.member_id
+              WHERE m.member_id = $id and t.status = 'A_FAIRE' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
 
             $stmt = $conn->prepare($query);
             $stmt->execute();
@@ -82,7 +83,8 @@ class tache
               FROM tache t 
               INNER JOIN projet p ON t.projet_id = p.id 
               INNER JOIN category c ON t.category_id = c.category_id
-              WHERE t.status = 'EN_COURS' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
+              INNER JOIN member m ON m.member_id = t.member_id
+              WHERE m.member_id = $id and t.status = 'EN_COURS' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -99,7 +101,8 @@ class tache
               FROM tache t 
               INNER JOIN projet p ON t.projet_id = p.id 
               INNER JOIN category c ON t.category_id = c.category_id
-              WHERE t.status = 'TERMINER' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
+              INNER JOIN member m ON m.member_id = t.member_id
+              WHERE m.member_id = $id and t.status = 'TERMINER' and p.status = 'ACTIVE' and m.status = 'active' and m.CTO_id is not NULL and t.deleted = 'active'";
 
             $stmt = $conn->prepare($query);
             $stmt->execute();

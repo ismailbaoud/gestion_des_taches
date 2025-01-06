@@ -194,6 +194,7 @@ if (!empty($_SESSION["login_success"])) {
                         <?php
                         $res = new tache_member();
                         $taches = $res->display_done_taches($_SESSION["member_id"]);
+                       
                         if ($taches == null) {
                             $taches = [];
                         }
@@ -278,14 +279,10 @@ if (!empty($_SESSION["login_success"])) {
     $res = new info_member();
     $members = $res->get_memberinfo($_SESSION["member_id"]);
 
-    // Handle case where no members are found
     if ($members == null) {
         $members = [];
     }
-
-    // Loop through each member and process the image
     foreach ($members as $tache):
-        // Assuming 'image' is the field name containing the binary image data
         $imageData = base64_encode($tache['image']);
         $imageSrc = "data:image/jpeg;base64,{$imageData}";
         ?>
@@ -510,60 +507,6 @@ if (!empty($_SESSION["login_success"])) {
                 e.stopPropagation();
             });
         });
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-        let draggedTaskId = null;
-
-function onDragStart(event) {
-  draggedTaskId = event.target.id;
-}
-
-function onDrop(event) {
-  event.preventDefault();
-  
-  const droppedOnTaskId = event.target.id;
-  
-  // Update the task order in the frontend
-  const draggedTask = document.getElementById(draggedTaskId);
-  const droppedTask = document.getElementById(droppedOnTaskId);
-  
-  // Swap the tasks visually or reorder them in the list
-  droppedTask.parentNode.insertBefore(draggedTask, droppedTask.nextSibling);
-
-  // Now send the update to the backend to change the task's status
-  const newStatus = getNewStatus(droppedTaskId); // Logic to get the new status for task
-  
-  updateTaskStatusInDatabase(draggedTaskId, newStatus);
-}
-
-function onDragOver(event) {
-  event.preventDefault();
-}
-
-function getNewStatus(taskId) {
-  // You can define your own logic here to determine the new status
-  // based on the task's new position
-  return 'newStatus';  // Example placeholder
-}
-
-function updateTaskStatusInDatabase(taskId, newStatus) {
-  fetch('/update-task-status', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      taskId: taskId,
-      newStatus: newStatus,
-    }),
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Task status updated:', data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-}
 
     </script>
 </body>
